@@ -113,8 +113,6 @@ function iterateFilesInFolder(
 function getExcludes(key) {
     const excludes = [];
 
-    console.log(key);
-    console.log(process.env[key]);
     const splitExcludes = process.env[key].split(";");
 
     for (let i = 0; i <= splitExcludes.length - 2; i += 2) {

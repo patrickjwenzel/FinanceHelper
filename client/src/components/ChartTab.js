@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import * as MUIIcons from "@mui/icons-material";
 import { BarChart } from "@mui/x-charts/BarChart";
-import { axisClasses } from "@mui/x-charts/ChartsAxis";
 
 const _ = require("lodash");
 
@@ -12,7 +8,7 @@ export default function ChartTab(props) {
     const [dataset, setDataSet] = useState(null);
 
     const chartSetting = {
-        series: [{ dataKey: "amount", label: "Amount Spent ($)" }],
+        series: [{ dataKey: "amount", label: "Cash Flow ($)" }],
         height: 400,
     };
 
