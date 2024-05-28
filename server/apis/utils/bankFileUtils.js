@@ -22,7 +22,6 @@ function bankFileAnalysis(
     prefix,
     noPrefixFunc,
     dateIndex,
-    typeIndex,
     amountIndex,
     shouldSplit,
     excludes
@@ -44,7 +43,7 @@ function bankFileAnalysis(
 
         _.forEach(splitLines, (line) => {
             const splitLine = line.split(",");
-            if (!_.includes(excludes, splitLine[typeIndex])) {
+            if (shouldBeIncluded(line, excludes)) {
                 let total = parseFloat(splitLine[amountIndex]);
                 total = !Boolean(total)
                     ? parseFloat(splitLine[amountIndex + 1])
@@ -113,6 +112,18 @@ function isLTMax(toCompare, max, endOf, isMonthly = false) {
     const maxDate = moment(max).endOf(endOf);
     const diff = moment(toCompare).diff(maxDate, "days");
     return isMonthly ? diff < 0 : diff <= 0;
+}
+
+function shouldBeIncluded(line, excludes) {
+    let include = true;
+
+    _.forEach(excludes, (el) => {
+        if (line[el.index] === el.value) {
+            include = false;
+        }
+    });
+
+    return include;
 }
 
 module.exports.iterateBankFolder = iterateBankFolder;

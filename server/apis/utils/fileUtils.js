@@ -8,6 +8,7 @@ function mergeFiles(req) {
     const purchases = {};
 
     // Sum up CC purchases
+    const ccExcludes = getExcludes("CC_EXCLUDE");
     const ccFolderContents = bankFileUtils.iterateBankFolder("CC_CSV_LOCATION");
     const ccPurchases = iterateFilesInFolder(
         ccFolderContents.fileNames,
@@ -17,13 +18,13 @@ function mergeFiles(req) {
         "CC_CSV_PREFIX",
         ccFileNoPrefix,
         1,
-        4,
         5,
         true,
-        ["Payment"]
+        ccExcludes
     );
 
     // Sum up SC purchases
+    const scExcludes = getExcludes("SC_EXCLUDE");
     const scFolderContents = bankFileUtils.iterateBankFolder("SC_CSV_LOCATION");
     const scPurchases = iterateFilesInFolder(
         scFolderContents.fileNames,
@@ -33,13 +34,13 @@ function mergeFiles(req) {
         "SC_CSV_PREFIX",
         scAndSSFileNoPrefix,
         0,
-        2,
         3,
         false,
-        ["Withdrawal"]
+        scExcludes
     );
 
     // Sum up SS purchases
+    const ssExcludes = getExcludes("SS_EXCLUDE");
     const ssFolderContents = bankFileUtils.iterateBankFolder("SS_CSV_LOCATION");
     const ssPurchases = iterateFilesInFolder(
         ssFolderContents.fileNames,
@@ -49,10 +50,9 @@ function mergeFiles(req) {
         "SS_CSV_PREFIX",
         scAndSSFileNoPrefix,
         0,
-        2,
         3,
         false,
-        ["Deposit", "Withdrawal"]
+        ssExcludes
     );
 
     _.forEach(ccPurchases, (purchase) => {
@@ -74,7 +74,6 @@ function iterateFilesInFolder(
     prefix,
     noPrefixFunc,
     dateIndex,
-    typeIndex,
     amountIndex,
     shouldSplit,
     excludes
@@ -92,7 +91,6 @@ function iterateFilesInFolder(
             prefix,
             noPrefixFunc,
             dateIndex,
-            typeIndex,
             amountIndex,
             shouldSplit,
             excludes
@@ -110,6 +108,23 @@ function iterateFilesInFolder(
     });
 
     return purchases;
+}
+
+function getExcludes(key) {
+    const excludes = [];
+
+    console.log(key);
+    console.log(process.env[key]);
+    const splitExcludes = process.env[key].split(";");
+
+    for (let i = 0; i <= splitExcludes.length - 2; i += 2) {
+        excludes.push({
+            index: Number(splitExcludes[i]),
+            value: splitExcludes[i + 1],
+        });
+    }
+
+    return excludes;
 }
 
 function ccFileNoPrefix(prefix, file) {

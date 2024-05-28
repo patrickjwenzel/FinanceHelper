@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 // APIs
 
-app.get("/analysis/:period/", (req, res) => {
+app.get("/analysis/:period", (req, res) => {
     const totals = fileUtils.mergeFiles(req);
     res.json(totals);
 });
