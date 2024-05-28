@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import moment from "moment";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Grid from "@mui/material/Grid";
+import axios from "axios";
 
 import PeriodSelector from "./PeriodSelector";
 
@@ -13,12 +14,33 @@ const boy = moment("01/01/2024");
 
 const today = moment().format("YYYY-MM-DD");
 
-export default function SideFilter() {
+export default function SideFilter(props) {
     const [selectedDates, setSelectedDates] = useState({
         min: null,
         max: null,
     });
     const [period, setPeriod] = useState("monthly");
+
+    useEffect(() => {
+        props.setData(null);
+        let url = "";
+
+        if (props.selectedTab === 0) {
+            url += `/analysis/${period}`;
+
+            if (selectedDates.min) {
+                url += `/min/${moment(selectedDates.min).format("YYYY-MM-DD")}`;
+            }
+
+            if (selectedDates.max) {
+                url += `/max/${moment(selectedDates.max).format("YYYY-MM-DD")}`;
+            }
+        }
+
+        axios.get(url).then((response) => {
+            props.setData(response.data);
+        });
+    }, [selectedDates, period]);
 
     return (
         <>
@@ -45,10 +67,6 @@ export default function SideFilter() {
                                     setSelectedDates(tempSelectedDates);
                                 }}
                                 views={["month", "year"]}
-                                slotProps={{
-                                    // pass props `actions={['clear']}` to the actionBar slot
-                                    actionBar: { actions: ["clear"] },
-                                }}
                                 // slotProps={
                                 //     {
                                 //         field: { clearable: true, onClear: () => setCleared(true) },

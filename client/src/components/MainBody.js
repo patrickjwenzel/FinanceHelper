@@ -12,12 +12,17 @@ const _ = require("lodash");
 
 export default function MainBody(props) {
     const { selectedTab } = props;
+    const [data, setData] = useState(null);
 
     return (
         <Box sx={{ flexGrow: 1, marginX: 3 }}>
             <Grid container spacing={3}>
                 <Grid item xs>
-                    <SideFilter />
+                    <SideFilter
+                        selectedTab={selectedTab}
+                        data={data}
+                        setData={setData}
+                    />
                 </Grid>
                 <Grid item xs={8}>
                     <CCTab />
