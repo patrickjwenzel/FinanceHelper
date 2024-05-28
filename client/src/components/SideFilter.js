@@ -41,9 +41,9 @@ export default function SideFilter() {
                                     const tempSelectedDates =
                                         _.cloneDeep(selectedDates);
                                     tempSelectedDates.min = moment(value);
-                                    console.log(value);
                                     setSelectedDates(tempSelectedDates);
                                 }}
+                                views={["month", "year"]}
                                 // slotProps={
                                 //     {
                                 //         field: { clearable: true, onClear: () => setCleared(true) },
@@ -64,6 +64,7 @@ export default function SideFilter() {
                                     tempSelectedDates.max = moment(value);
                                     setSelectedDates(tempSelectedDates);
                                 }}
+                                views={["month", "year"]}
                                 // slotProps={
                                 //     {
                                 //         field: { clearable: true, onClear: () => setCleared(true) },
