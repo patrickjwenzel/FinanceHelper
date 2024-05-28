@@ -6,6 +6,8 @@ import moment from "moment";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Grid from "@mui/material/Grid";
 
+import PeriodSelector from "./PeriodSelector";
+
 const _ = require("lodash");
 const boy = moment("01/01/2024");
 
@@ -16,6 +18,7 @@ export default function SideFilter() {
         min: null,
         max: null,
     });
+    const [period, setPeriod] = useState("monthly");
 
     return (
         <>
@@ -24,9 +27,7 @@ export default function SideFilter() {
                     border: "3px solid #2380BF",
                     borderRadius: 15,
                     marginTop: 5,
-                    color: "white",
                 }}
-                label="hi"
             >
                 <Box sx={{ flexGrow: 1, margin: "8%" }}>
                     <Grid container spacing={1}>
@@ -44,6 +45,10 @@ export default function SideFilter() {
                                     setSelectedDates(tempSelectedDates);
                                 }}
                                 views={["month", "year"]}
+                                slotProps={{
+                                    // pass props `actions={['clear']}` to the actionBar slot
+                                    actionBar: { actions: ["clear"] },
+                                }}
                                 // slotProps={
                                 //     {
                                 //         field: { clearable: true, onClear: () => setCleared(true) },
@@ -73,6 +78,7 @@ export default function SideFilter() {
                             />
                         </Grid>
                     </Grid>
+                    <PeriodSelector period={period} setPeriod={setPeriod} />
                 </Box>
             </Box>
         </>
