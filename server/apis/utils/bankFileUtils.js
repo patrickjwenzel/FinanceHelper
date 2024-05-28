@@ -45,7 +45,10 @@ function bankFileAnalysis(
         _.forEach(splitLines, (line) => {
             const splitLine = line.split(",");
             if (!_.includes(excludes, splitLine[typeIndex])) {
-                const total = parseFloat(splitLine[amountIndex]);
+                let total = parseFloat(splitLine[amountIndex]);
+                total = !Boolean(total)
+                    ? parseFloat(splitLine[amountIndex + 1])
+                    : total;
                 if (isMonthly) {
                     sum.total += total;
                 } else {

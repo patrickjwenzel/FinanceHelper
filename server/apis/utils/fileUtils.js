@@ -55,10 +55,6 @@ function mergeFiles(req) {
         ["Deposit", "Withdrawal"]
     );
 
-    // console.log(ccPurchases);
-    // console.log(scPurchases);
-    // console.log(ssPurchases);
-
     _.forEach(ccPurchases, (purchase) => {
         purchases[purchase.date] = purchase.total;
     });
