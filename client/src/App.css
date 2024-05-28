@@ -22,3 +22,23 @@
 .MuiOutlinedInput-notchedOutline.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
   border-color: white !important;
 }
+
+.MuiChartsAxis-line {
+  stroke: white !important;
+}
+
+.MuiChartsAxis-tick {
+  stroke: white !important;
+}
+
+.MuiChartsAxis-tickLabel {
+  stroke: white !important;
+}
+
+.MuiChartsAxis-label {
+  stroke: white !important;
+}
+
+.MuiChartsLegend-series {
+  stroke: white !important;
+}
