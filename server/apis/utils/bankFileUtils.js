@@ -5,19 +5,29 @@ const moment = require("moment");
 
 const fileUtils = require("./fileUtils");
 
-function iterateCCFolder() {
-    const ccFolder = path.join(process.env.CC_CSV_LOCATION);
-    const ccFiles = fs.readdirSync(ccFolder);
+function iterateBankFolder(location) {
+    const bankFolder = path.join(process.env[location]);
+    const bankFiles = fs.readdirSync(bankFolder);
 
     return {
-        folderPath: ccFolder,
-        fileNames: ccFiles,
+        folderPath: bankFolder,
+        fileNames: bankFiles,
     };
 }
 
-function ccFileAnalysis(file, lines, req) {
-    const regex = new RegExp(`${process.env.CC_CSV_PREFIX}|.CSV`);
-    const fileNoPrefix = file.replace(regex, "").substring(0, 8);
+function bankFileAnalysis(
+    file,
+    lines,
+    req,
+    prefix,
+    noPrefixFunc,
+    dateIndex,
+    typeIndex,
+    amountIndex,
+    shouldSplit,
+    excludes
+) {
+    const fileNoPrefix = noPrefixFunc(prefix, file);
     const sum = {};
     const isMonthly = req.params.period === "monthly";
     const shouldIterate = shouldPass(req, fileNoPrefix, "month");
@@ -34,13 +44,15 @@ function ccFileAnalysis(file, lines, req) {
 
         _.forEach(splitLines, (line) => {
             const splitLine = line.split(",");
-            if (splitLine[4] !== "Payment") {
-                const total = parseFloat(splitLine[5]);
+            if (!_.includes(excludes, splitLine[typeIndex])) {
+                const total = parseFloat(splitLine[amountIndex]);
                 if (isMonthly) {
                     sum.total += total;
                 } else {
-                    let date = splitLine[1].split("/");
+                    let date = splitLine[dateIndex].split("/");
                     date = `${date[2]}-${date[0]}-${date[1]}`;
+
+                    date = shouldSplit ? date : splitLine[dateIndex];
 
                     const shouldAdd = shouldPass(req, date, "week");
 
@@ -100,5 +112,5 @@ function isLTMax(toCompare, max, endOf, isMonthly = false) {
     return isMonthly ? diff < 0 : diff <= 0;
 }
 
-module.exports.iterateCCFolder = iterateCCFolder;
-module.exports.ccFileAnalysis = ccFileAnalysis;
+module.exports.iterateBankFolder = iterateBankFolder;
+module.exports.bankFileAnalysis = bankFileAnalysis;
