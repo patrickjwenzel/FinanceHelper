@@ -1,8 +1,5 @@
-import { useState, useEffect } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+import { useState } from "react";
 import Box from "@mui/material/Box";
-import * as MUIIcons from "@mui/icons-material";
 import Grid from "@mui/material/Grid";
 
 import ChartTab from "./ChartTab";

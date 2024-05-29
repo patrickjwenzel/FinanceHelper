@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import SpendingBarChart from "./charts/SpendingBarChart";
 
-const _ = require("lodash");
+
 
 export default function ChartTab(props) {
     return (

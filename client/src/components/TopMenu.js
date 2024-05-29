@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import * as MUIIcons from "@mui/icons-material";
 
 import MainBody from "./MainBody";
-
-const _ = require("lodash");
+import TabMenu from "./TabMenu";
 
 export default function TopMenu() {
     const [selectedTab, setSelectedTab] = useState(0);
