@@ -140,7 +140,7 @@ function scAndSSFileNoPrefix(prefix, file) {
 }
 
 function roundFloat(num) {
-    return (Math.round((num + Number.EPSILON) * 100) / 100) * -1;
+    return Math.round((num + Number.EPSILON) * 100) / 100;
 }
 
 module.exports.mergeFiles = mergeFiles;
