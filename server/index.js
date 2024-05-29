@@ -1,7 +1,6 @@
 // Package imports
 const express = require("express");
 const bodyParser = require("body-parser");
-const moment = require("moment");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -38,6 +37,7 @@ app.get("/analysis/:period/min/:min/max/:max", (req, res) => {
 });
 
 // ---------- CC Tab ----------
+// ---------- Overall ----------
 app.get("/ccTab/overall/:period", (req, res) => {
     const totals = ccTab.getCCOverallPurchases(req);
     res.json(totals);
@@ -55,6 +55,12 @@ app.get("/ccTab/overall/:period/max/:max", (req, res) => {
 
 app.get("/ccTab/overall/:period/min/:min/max/:max", (req, res) => {
     const totals = ccTab.getCCOverallPurchases(req);
+    res.json(totals);
+});
+
+// ---------- Insights ----------
+app.get("/ccTab/insight/:insight/period/:period/date/:date", (req, res) => {
+    const totals = ccTab.getCCInsightPurchases(req);
     res.json(totals);
 });
 

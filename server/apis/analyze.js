@@ -72,9 +72,4 @@ function scAndSSFileNoPrefix(prefix, file) {
     return fileNoPrefix;
 }
 
-function roundFloat(num) {
-    return Math.round((num + Number.EPSILON) * 100) / 100;
-}
-
 module.exports.mergeBanks = mergeBanks;
-module.exports.roundFloat = roundFloat;

@@ -3,8 +3,6 @@ const _ = require("lodash");
 const path = require("path");
 const moment = require("moment");
 
-const fileUtils = require("../analyze");
-
 function iterateBankFolder(location) {
     const bankFolder = path.join(process.env[location]);
     const bankFiles = fs.readdirSync(bankFolder);
@@ -74,14 +72,14 @@ function bankFileAnalysis(
 
         if (isMonthly) {
             sum.date = moment(fileNoPrefix).format("MM/YYYY");
-            sum.total = fileUtils.roundFloat(sum.total);
+            sum.total = sum.total;
             return sum;
         } else {
             const arr = [];
             _.forEach(Object.keys(sum), (key) => {
                 arr.push({
                     date: key,
-                    total: fileUtils.roundFloat(sum[key]),
+                    total: sum[key],
                 });
             });
 
@@ -92,6 +90,14 @@ function bankFileAnalysis(
 
 function shouldPass(req, toCompare, of) {
     let shouldPass = true;
+
+    req.params.min = req.params.date
+        ? moment(req.params.date).startOf(of)
+        : req.params.min;
+    req.params.max = req.params.date
+        ? moment(req.params.date).endOf(of)
+        : req.params.max;
+
     if (req.params.min) {
         shouldPass = shouldPass && isGTMin(toCompare, req.params.min, of);
     }
@@ -130,3 +136,5 @@ function shouldBeIncluded(line, excludes, amountIndex) {
 
 module.exports.iterateBankFolder = iterateBankFolder;
 module.exports.bankFileAnalysis = bankFileAnalysis;
+module.exports.shouldBeIncluded = shouldBeIncluded;
+module.exports.shouldPass = shouldPass;
