@@ -33,23 +33,13 @@ export default function TopMenu() {
                 width: "100%",
             }}
         >
-            <Box sx={{ color: "white" }}>
-                <Tabs
-                    value={selectedTab}
-                    onChange={handleChange}
-                    centered
-                    textColor="inherit"
-                >
-                    {_.map(tabs, (tab, i) => (
-                        <Tab
-                            icon={tab.icon}
-                            label={tab.label}
-                            value={i}
-                            key={`${tab.label}${i}`}
-                        />
-                    ))}
-                </Tabs>
-            </Box>
+            <TabMenu
+                selectedTab={selectedTab}
+                setSelectedTab={setSelectedTab}
+                tabs={tabs}
+                handleChange={handleChange}
+                centered
+            />
             <MainBody selectedTab={selectedTab} />
         </Box>
     );
