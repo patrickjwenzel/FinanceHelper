@@ -10,21 +10,18 @@ import PeriodSelector from "./PeriodSelector";
 const _ = require("lodash");
 const boy = moment("01/01/2024");
 
-const today = moment().format("YYYY-MM-DD");
-
 export default function SideFilter(props) {
     const [selectedDates, setSelectedDates] = useState({
         min: null,
         max: null,
     });
-    const [period, setPeriod] = useState("monthly");
 
     useEffect(() => {
         props.setData(null);
         let url = "";
 
         if (props.selectedTab === 0) {
-            url += `/analysis/${period}`;
+            url += `/analysis/${props.period}`;
 
             if (selectedDates.min) {
                 url += `/min/${moment(selectedDates.min).format("YYYY-MM-DD")}`;
@@ -38,7 +35,7 @@ export default function SideFilter(props) {
         axios.get(url).then((response) => {
             props.setData(response.data);
         });
-    }, [selectedDates, period]);
+    }, [selectedDates, props.period]);
 
     return (
         <>
@@ -94,7 +91,10 @@ export default function SideFilter(props) {
                             />
                         </Grid>
                     </Grid>
-                    <PeriodSelector period={period} setPeriod={setPeriod} />
+                    <PeriodSelector
+                        period={props.period}
+                        setPeriod={props.setPeriod}
+                    />
                 </Box>
             </Box>
         </>
