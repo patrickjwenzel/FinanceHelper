@@ -57,8 +57,6 @@ export default function SpendingBarChart(props) {
         }
     }, [props.data]);
 
-    useEffect(() => {}, [dataset]);
-
     return (
         dataset && (
             <BarChart

@@ -11,6 +11,8 @@ export default function MainBody(props) {
     const { selectedTab } = props;
     const [data, setData] = useState(null);
     const [period, setPeriod] = useState("monthly");
+    const [selectedInsight, setSelectedInsight] = useState(0);
+    const [selectedCCDate, setSelectedCCDate] = useState(null);
 
     return (
         <Box sx={{ flexGrow: 1, marginX: 3 }}>
@@ -22,6 +24,7 @@ export default function MainBody(props) {
                         setData={setData}
                         period={period}
                         setPeriod={setPeriod}
+                        selectedInsight={selectedInsight}
                     />
                 </Grid>
                 <Grid item xs={8}>
@@ -30,6 +33,10 @@ export default function MainBody(props) {
                         selectedTab={selectedTab}
                         period={period}
                         setPeriod={setPeriod}
+                        selectedInsight={selectedInsight}
+                        setSelectedInsight={setSelectedInsight}
+                        selectedCCDate={selectedCCDate}
+                        setSelectedCCDate={setSelectedCCDate}
                     />
                 </Grid>
             </Grid>

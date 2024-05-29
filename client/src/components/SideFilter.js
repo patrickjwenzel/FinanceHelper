@@ -9,6 +9,7 @@ import DateRange from "./DateRange";
 
 const _ = require("lodash");
 const boy = moment("01/01/2024");
+const today = moment();
 
 export default function SideFilter(props) {
     const [selectedDates, setSelectedDates] = useState({
@@ -16,23 +17,8 @@ export default function SideFilter(props) {
         max: null,
     });
 
-    const [clearedMax, setClearedMax] = useState(false);
-
-    const addTabToURL = (tab) => {
-        return `/${tab}/${props.period}`;
-    };
-
-    useEffect(() => {
-        props.setData(null);
-        let url = "";
-        console.log(selectedDates);
-
-        if (props.selectedTab === 0) {
-            url = addTabToURL("analysis");
-        } else if (props.selectedTab === 1) {
-            url = addTabToURL("ccTab/overall");
-        }
-
+    const addTabAndDatesToURL = (tab) => {
+        let url = `/${tab}/${props.period}`;
         if (selectedDates.min) {
             url += `/min/${moment(selectedDates.min).format("YYYY-MM-DD")}`;
         }
@@ -40,7 +26,34 @@ export default function SideFilter(props) {
         if (selectedDates.max) {
             url += `/max/${moment(selectedDates.max).format("YYYY-MM-DD")}`;
         }
-        console.log(url);
+        return url;
+    };
+
+    const addInsightToURL = (selectedInsight) => {
+        return (
+            `/insight/${selectedInsight === 1 ? "category" : "place"}` +
+            `/period/${props.period}/date/${moment(
+                props.selectedCCDate || today
+            ).format("YYYY-MM-DD")}`
+        );
+    };
+
+    useEffect(() => {
+        props.setData(null);
+        let url = "";
+
+        if (props.selectedTab === 0) {
+            url = addTabAndDatesToURL("analysis");
+        } else if (props.selectedTab === 1) {
+            url += "ccTab";
+
+            ///ccTab/insight/:insight/period/:period/date/:date
+            if (props.selectedInsight === 0) {
+                url += addTabAndDatesToURL("overall");
+            } else {
+                url += addInsightToURL(props.selectedInsight);
+            }
+        }
 
         axios.get(url).then((response) => {
             props.setData(response.data);

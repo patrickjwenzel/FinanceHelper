@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import SpendingBarChart from "./charts/SpendingBarChart";
 import * as MUIIcons from "@mui/icons-material";
 
 import TabMenu from "./TabMenu";
+import SpendingBarChart from "./charts/SpendingBarChart";
+import SpendingPieChart from "./charts/SpendingPieChart";
 
 export default function CCTab(props) {
-    const [selectedTab, setSelectedTab] = useState(0);
+    const [dataset, setDataset] = useState(null);
 
     const tabs = [
         {
@@ -24,7 +25,7 @@ export default function CCTab(props) {
     ];
 
     const handleChange = (event, newTab) => {
-        setSelectedTab(newTab);
+        props.setSelectedInsight(newTab);
     };
 
     return (
@@ -36,16 +37,35 @@ export default function CCTab(props) {
             }}
         >
             <TabMenu
-                selectedTab={selectedTab}
-                setSelectedTab={setSelectedTab}
+                selectedTab={props.selectedInsight}
+                setSelectedTab={props.setSelectedInsight}
                 tabs={tabs}
                 handleChange={handleChange}
                 centered={false}
             />
-            {selectedTab === 0 && (
+            {props.selectedInsight === 0 && (
                 <SpendingBarChart
                     data={props.data}
                     label={`${process.env.REACT_APP_CC_NAME} Spending`}
+                />
+            )}
+            {props.selectedInsight === 1 && (
+                <SpendingPieChart
+                    data={props.data}
+                    dataset={dataset}
+                    setDataset={setDataset}
+                    selectedTab={props.selectedInsight}
+                    setSelectedTab={props.setSelectedInsight}
+                    // label={`${process.env.REACT_APP_CC_NAME} Spending`}
+                />
+            )}
+            {props.selectedInsight === 2 && (
+                <SpendingPieChart
+                    data={props.data}
+                    dataset={dataset}
+                    setDataset={setDataset}
+                    hidden
+                    // label={`${process.env.REACT_APP_CC_NAME} Spending`}
                 />
             )}
         </Box>

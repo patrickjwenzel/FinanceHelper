@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import SpendingBarChart from "./charts/SpendingBarChart";
 import CCTab from "./CCTab";
@@ -19,7 +18,15 @@ export default function ChartTab(props) {
             {props.selectedTab === 0 && (
                 <SpendingBarChart data={props.data} label="Cash Flow ($)" />
             )}
-            {props.selectedTab === 1 && <CCTab data={props.data} label="" />}
+            {props.selectedTab === 1 && (
+                <CCTab
+                    selectedInsight={props.selectedInsight}
+                    setSelectedInsight={props.setSelectedInsight}
+                    selectedCCDate={props.selectedCCDate}
+                    setSelectedCCDate={props.setSelectedCCDate}
+                    data={props.data}
+                />
+            )}
         </Box>
     );
 }
