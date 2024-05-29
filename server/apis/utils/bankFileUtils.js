@@ -3,7 +3,7 @@ const _ = require("lodash");
 const path = require("path");
 const moment = require("moment");
 
-const fileUtils = require("./fileUtils");
+const fileUtils = require("../analyze");
 
 function iterateBankFolder(location) {
     const bankFolder = path.join(process.env[location]);
@@ -43,11 +43,11 @@ function bankFileAnalysis(
 
         _.forEach(splitLines, (line) => {
             const splitLine = line.split(",");
-            if (shouldBeIncluded(line, excludes)) {
+            if (shouldBeIncluded(splitLine, excludes, amountIndex)) {
                 let total = parseFloat(splitLine[amountIndex]);
-                total = !Boolean(total)
-                    ? parseFloat(splitLine[amountIndex + 1])
-                    : total;
+                total = Boolean(total)
+                    ? total
+                    : parseFloat(splitLine[amountIndex + 1]);
                 if (isMonthly) {
                     sum.total += total;
                 } else {
@@ -114,11 +114,13 @@ function isLTMax(toCompare, max, endOf, isMonthly = false) {
     return isMonthly ? diff < 0 : diff <= 0;
 }
 
-function shouldBeIncluded(line, excludes) {
+function shouldBeIncluded(line, excludes, amountIndex) {
     let include = true;
 
     _.forEach(excludes, (el) => {
-        if (line[el.index] === el.value) {
+        const total = parseFloat(line[amountIndex]);
+        const index = Boolean(total) ? el.index : el.index + 1;
+        if (line[index] === el.value) {
             include = false;
         }
     });
