@@ -5,9 +5,11 @@ const commonUtils = require("./utils/commonUtils");
 const ccFileUtils = require("./utils/ccFileUtils");
 
 function getCCOverallPurchases(req) {
-    const purchases = getPurchases(req, bankFileUtils.bankFileAnalysis);
+    const purchases = {};
 
-    _.forEach(purchases, (purchase) => {
+    const ccPurchases = getPurchases(req, bankFileUtils.bankFileAnalysis);
+
+    _.forEach(ccPurchases, (purchase) => {
         purchases[purchase.date] = purchase.total * -1;
     });
 
