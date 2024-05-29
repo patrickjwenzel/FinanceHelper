@@ -15,14 +15,31 @@ export default function SideFilter(props) {
         min: null,
         max: null,
     });
+    const [clearedMin, setClearedMin] = useState(false);
+    const [clearedMax, setClearedMax] = useState(false);
 
     const addTabToURL = (tab) => {
         return `/${tab}/${props.period}`;
     };
 
     useEffect(() => {
+        if (clearedMin) {
+            setClearedMin(false);
+            updateDates("min", null);
+        }
+    }, [setClearedMin]);
+
+    useEffect(() => {
+        if (clearedMax) {
+            setClearedMax(false);
+            updateDates("max", null);
+        }
+    }, [clearedMax]);
+
+    useEffect(() => {
         props.setData(null);
         let url = "";
+        console.log(selectedDates);
 
         if (props.selectedTab === 0) {
             url = addTabToURL("analysis");
@@ -37,11 +54,18 @@ export default function SideFilter(props) {
         if (selectedDates.max) {
             url += `/max/${moment(selectedDates.max).format("YYYY-MM-DD")}`;
         }
+        console.log(url);
 
         axios.get(url).then((response) => {
             props.setData(response.data);
         });
-    }, [selectedDates, props.period]);
+    }, [selectedDates, props.period, props.selectedTab]);
+
+    const updateDates = (date, value) => {
+        const tempSelectedDates = _.cloneDeep(selectedDates);
+        tempSelectedDates[date] = value ? moment(value) : null;
+        setSelectedDates(tempSelectedDates);
+    };
 
     return (
         <>
@@ -62,12 +86,15 @@ export default function SideFilter(props) {
                                 minDate={boy}
                                 value={selectedDates.min}
                                 onChange={(value) => {
-                                    const tempSelectedDates =
-                                        _.cloneDeep(selectedDates);
-                                    tempSelectedDates.min = moment(value);
-                                    setSelectedDates(tempSelectedDates);
+                                    updateDates("min", value);
                                 }}
                                 views={["month", "year"]}
+                                slotProps={{
+                                    field: {
+                                        clearable: true,
+                                        onClear: () => setClearedMin(true),
+                                    },
+                                }}
                                 // slotProps={
                                 //     {
                                 //         field: { clearable: true, onClear: () => setCleared(true) },
@@ -83,12 +110,15 @@ export default function SideFilter(props) {
                                 minDate={selectedDates.min || boy}
                                 value={selectedDates.max}
                                 onChange={(value) => {
-                                    const tempSelectedDates =
-                                        _.cloneDeep(selectedDates);
-                                    tempSelectedDates.max = moment(value);
-                                    setSelectedDates(tempSelectedDates);
+                                    updateDates("max", value);
                                 }}
                                 views={["month", "year"]}
+                                slotProps={{
+                                    field: {
+                                        clearable: true,
+                                        onClear: () => setClearedMin(true),
+                                    },
+                                }}
                                 // slotProps={
                                 //     {
                                 //         field: { clearable: true, onClear: () => setCleared(true) },

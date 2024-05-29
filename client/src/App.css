@@ -42,3 +42,8 @@
 .MuiChartsLegend-series {
   stroke: white !important;
 }
+
+.MuiSvgIcon-root.MuiSvgIcon-fontSizeSmall.css-ptiqhd-MuiSvgIcon-root {
+  stroke: white !important;
+  color: white !important;
+}
