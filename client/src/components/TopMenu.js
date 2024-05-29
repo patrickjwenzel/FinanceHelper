@@ -22,11 +22,7 @@ export default function TopMenu() {
         },
         {
             icon: <MUIIcons.AccountBalance />,
-            label: process.env.REACT_APP_CHECKING_NAME,
-        },
-        {
-            icon: <MUIIcons.Savings />,
-            label: process.env.REACT_APP_SAVINGS_NAME,
+            label: process.env.REACT_APP_BANK_NAME,
         },
     ];
 

@@ -16,20 +16,26 @@ export default function SideFilter(props) {
         max: null,
     });
 
+    const addTabToURL = (tab) => {
+        return `/${tab}/${props.period}`;
+    };
+
     useEffect(() => {
         props.setData(null);
         let url = "";
 
         if (props.selectedTab === 0) {
-            url += `/analysis/${props.period}`;
+            url = addTabToURL("analysis");
+        } else if (props.selectedTab === 1) {
+            url = addTabToURL("ccTab/overall");
+        }
 
-            if (selectedDates.min) {
-                url += `/min/${moment(selectedDates.min).format("YYYY-MM-DD")}`;
-            }
+        if (selectedDates.min) {
+            url += `/min/${moment(selectedDates.min).format("YYYY-MM-DD")}`;
+        }
 
-            if (selectedDates.max) {
-                url += `/max/${moment(selectedDates.max).format("YYYY-MM-DD")}`;
-            }
+        if (selectedDates.max) {
+            url += `/max/${moment(selectedDates.max).format("YYYY-MM-DD")}`;
         }
 
         axios.get(url).then((response) => {

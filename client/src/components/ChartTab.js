@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import CashFlowChart from "./charts/CashFlowChart";
+import SpendingBarChart from "./charts/SpendingBarChart";
+import CCTab from "./CCTab";
 
 const _ = require("lodash");
 
@@ -15,7 +16,10 @@ export default function ChartTab(props) {
             }}
             textAlign="center"
         >
-            {props.selectedTab === 0 && <CashFlowChart data={props.data} />}
+            {props.selectedTab === 0 && (
+                <SpendingBarChart data={props.data} label="Cash Flow ($)" />
+            )}
+            {props.selectedTab === 1 && <CCTab data={props.data} label="" />}
         </Box>
     );
 }

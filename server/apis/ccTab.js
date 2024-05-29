@@ -23,7 +23,7 @@ function getCCOverallPurchases(req) {
     );
 
     _.forEach(ccPurchases, (purchase) => {
-        purchases[purchase.date] = purchase.total;
+        purchases[purchase.date] = purchase.total * -1;
     });
 
     return purchases;

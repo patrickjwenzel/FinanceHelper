@@ -4,11 +4,11 @@ import { BarChart } from "@mui/x-charts/BarChart";
 
 const _ = require("lodash");
 
-export default function CashFlowChart(props) {
+export default function SpendingBarChart(props) {
     const [dataset, setDataSet] = useState(null);
 
     const chartSetting = {
-        series: [{ dataKey: "amount", label: "Cash Flow ($)" }],
+        series: [{ dataKey: "amount", label: props.label }],
         height: 400,
     };
 
