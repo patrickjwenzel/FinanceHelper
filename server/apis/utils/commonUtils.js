@@ -12,7 +12,8 @@ function iterateFilesInFolder(
     dateIndex,
     amountIndex,
     shouldSplit,
-    excludes
+    excludes,
+    isInsight = false
 ) {
     const purchases = [];
 
@@ -33,7 +34,7 @@ function iterateFilesInFolder(
         );
 
         if (totals) {
-            if (req.params.period === "monthly") {
+            if (req.params.period === "monthly" || isInsight) {
                 purchases.push(totals);
             } else {
                 _.forEach(totals, (total) => {

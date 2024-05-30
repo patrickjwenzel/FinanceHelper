@@ -20,8 +20,9 @@ function getCCInsightPurchases(req) {
     const purchases = getPurchases(req, ccFileUtils.ccFileAnalysis);
     const arr = [];
 
+    console.log(purchases);
     _.forEach(purchases, (purchase) => {
-        if (_.size(purchase)) {
+        if (_.size(purchase.insights)) {
             _.forEach(Object.keys(purchase.insights), (key) => {
                 purchase.insights[key] *= -1;
             });
@@ -46,7 +47,8 @@ function getPurchases(req, analysisFunc) {
         1,
         5,
         true,
-        ccExcludes
+        ccExcludes,
+        true
     );
 
     return ccPurchases;
