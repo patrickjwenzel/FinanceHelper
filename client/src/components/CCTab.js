@@ -1,13 +1,30 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import * as MUIIcons from "@mui/icons-material";
+import Pagination from "@mui/material/Pagination";
+import moment from "moment";
 
 import TabMenu from "./TabMenu";
 import SpendingBarChart from "./charts/SpendingBarChart";
 import SpendingPieChart from "./charts/SpendingPieChart";
+import Heading from "./Heading";
 
 export default function CCTab(props) {
     const [dataset, setDataset] = useState(null);
+    const [page, setPage] = useState(1);
+
+    const getHeading = () => {
+        const date = moment();
+        let str = "Spending by ";
+        str += `${props.selectedInsight === 1 ? "category" : "place"} `;
+        str += `in the ${
+            props.period === "monthly"
+                ? `month of ${moment(date).format("MMMM YYYY")}`
+                : `week of ${moment(date).format("MMMM Do YYYY")}`
+        }`;
+
+        return str;
+    };
 
     const tabs = [
         {
@@ -56,17 +73,35 @@ export default function CCTab(props) {
                     setDataset={setDataset}
                     selectedTab={props.selectedInsight}
                     setSelectedTab={props.setSelectedInsight}
-                    // label={`${process.env.REACT_APP_CC_NAME} Spending`}
                 />
             )}
             {props.selectedInsight === 2 && (
-                <SpendingPieChart
-                    data={props.data}
-                    dataset={dataset}
-                    setDataset={setDataset}
-                    hidden
-                    // label={`${process.env.REACT_APP_CC_NAME} Spending`}
-                />
+                <>
+                    <Heading heading={getHeading()} />
+                    {props.pageCount && (
+                        <div
+                            style={{
+                                alignItems: "center",
+                                alignContent: "center",
+                                position: "relative",
+                                marginLeft: "30%",
+                            }}
+                        >
+                            <Pagination
+                                count={props.pageCount}
+                                page={page}
+                                onChange={(e, value) => setPage(value)}
+                            />
+                        </div>
+                    )}
+                    <SpendingPieChart
+                        data={props.data}
+                        dataset={dataset}
+                        setDataset={setDataset}
+                        pageCount={props.pageCount}
+                        page={page}
+                    />
+                </>
             )}
         </Box>
     );

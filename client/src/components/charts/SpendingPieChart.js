@@ -22,7 +22,7 @@ export default function SpendingPieChart(props) {
             for (i = 0; i < tempDataset.length - 1; i++) {
                 m = i;
                 for (j = i + 1; j < tempDataset.length; j++) {
-                    if (tempDataset[j].value < tempDataset[m].value) {
+                    if (tempDataset[j].value >= tempDataset[m].value) {
                         m = j;
                     }
 
@@ -32,11 +32,16 @@ export default function SpendingPieChart(props) {
                 }
             }
 
+            if (props.pageCount) {
+                const mult = props.page * 6;
+                tempDataset = tempDataset.slice(mult - 6, mult);
+            }
+
             props.setDataset(tempDataset);
         } else {
             props.setDataset(null);
         }
-    }, [props.data]);
+    }, [props.data, props.pageCount, props.page]);
 
     return (
         props.dataset && (
@@ -48,11 +53,6 @@ export default function SpendingPieChart(props) {
                         data: props.dataset,
                     },
                 ]}
-                slotProps={{
-                    legend: {
-                        hidden: props.hidden,
-                    },
-                }}
                 sx={{
                     marginRight: 20,
                     marginTop: 2,

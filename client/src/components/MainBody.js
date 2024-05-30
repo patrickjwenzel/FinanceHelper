@@ -13,6 +13,7 @@ export default function MainBody(props) {
     const [period, setPeriod] = useState("monthly");
     const [selectedInsight, setSelectedInsight] = useState(0);
     const [selectedCCDate, setSelectedCCDate] = useState(null);
+    const [pageCount, setPageCount] = useState(1);
 
     return (
         <Box sx={{ flexGrow: 1, marginX: 3 }}>
@@ -25,6 +26,7 @@ export default function MainBody(props) {
                         period={period}
                         setPeriod={setPeriod}
                         selectedInsight={selectedInsight}
+                        setPageCount={setPageCount}
                     />
                 </Grid>
                 <Grid item xs={8}>
@@ -37,6 +39,7 @@ export default function MainBody(props) {
                         setSelectedInsight={setSelectedInsight}
                         selectedCCDate={selectedCCDate}
                         setSelectedCCDate={setSelectedCCDate}
+                        pageCount={pageCount}
                     />
                 </Grid>
             </Grid>

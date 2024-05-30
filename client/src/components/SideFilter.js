@@ -40,6 +40,7 @@ export default function SideFilter(props) {
 
     useEffect(() => {
         props.setData(null);
+        props.setPageCount(null);
         let url = "";
 
         if (props.selectedTab === 0) {
@@ -57,6 +58,15 @@ export default function SideFilter(props) {
 
         axios.get(url).then((response) => {
             props.setData(response.data);
+            if (props.selectedTab === 1 && props.selectedInsight !== 0) {
+                const numInsights = Object.keys(
+                    response.data[0].insights
+                ).length;
+                console.log(numInsights);
+                let pageCount = Math.floor(numInsights / 6);
+                pageCount += numInsights % 6 ? 1 : 0;
+                props.setPageCount(pageCount);
+            }
         });
     }, [selectedDates, props.period, props.selectedTab, props.selectedInsight]);
 

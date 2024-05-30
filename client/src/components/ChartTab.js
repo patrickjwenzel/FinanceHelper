@@ -25,6 +25,8 @@ export default function ChartTab(props) {
                     selectedCCDate={props.selectedCCDate}
                     setSelectedCCDate={props.setSelectedCCDate}
                     data={props.data}
+                    period={props.period}
+                    pageCount={props.pageCount}
                 />
             )}
         </Box>
