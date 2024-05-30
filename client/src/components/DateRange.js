@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import CustomDatePicker from "./CustomDatePicker";
 
 const _ = require("lodash");
-const boy = moment("01/01/2024");
+const MINIMUM_DATE = moment("01/01/2024");
 
 export default function DateRange(props) {
     const [clearedMin, setClearedMin] = useState(false);
@@ -38,7 +38,7 @@ export default function DateRange(props) {
                 <CustomDatePicker
                     id="min-date"
                     label="Min Date"
-                    minDate={boy}
+                    minDate={MINIMUM_DATE}
                     value={props.selectedDates.min}
                     onChange={(value) => {
                         updateDates("min", value);
@@ -50,7 +50,7 @@ export default function DateRange(props) {
                 <CustomDatePicker
                     id="max-date"
                     label="Max Date"
-                    minDate={props.selectedDates.min || boy}
+                    minDate={props.selectedDates.min || MINIMUM_DATE}
                     value={props.selectedDates.max}
                     onChange={(value) => {
                         updateDates("max", value);
