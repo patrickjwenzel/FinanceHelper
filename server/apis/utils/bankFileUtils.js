@@ -103,7 +103,7 @@ function shouldPass(req, toCompare, of) {
     }
 
     if (req.params.max) {
-        shouldPass = shouldPass && isLTMax(toCompare, req.params.max, of, true);
+        shouldPass = shouldPass && isLTMax(toCompare, req.params.max, of);
     }
 
     return shouldPass;
@@ -114,10 +114,10 @@ function isGTMin(toCompare, min, startOf) {
     const diff = moment(toCompare).diff(minDate, "days");
     return diff >= 0;
 }
-function isLTMax(toCompare, max, endOf, isMonthly = false) {
+function isLTMax(toCompare, max, endOf) {
     const maxDate = moment(max).endOf(endOf);
     const diff = moment(toCompare).diff(maxDate, "days");
-    return isMonthly ? diff < 0 : diff <= 0;
+    return diff <= 0;
 }
 
 function shouldBeIncluded(line, excludes, amountIndex) {
