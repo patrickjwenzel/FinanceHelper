@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Grid from "@mui/material/Grid";
 
 import CustomDatePicker from "./CustomDatePicker";

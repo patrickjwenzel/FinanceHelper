@@ -6,10 +6,10 @@ import axios from "axios";
 
 import PeriodSelector from "./PeriodSelector";
 import DateRange from "./DateRange";
+import CustomDatePicker from "./CustomDatePicker";
 
-const _ = require("lodash");
-const boy = moment("01/01/2024");
 const today = moment();
+const MINIMUM_DATE = moment("01/01/2024");
 
 export default function SideFilter(props) {
     const [selectedDates, setSelectedDates] = useState({
@@ -58,7 +58,12 @@ export default function SideFilter(props) {
 
         axios.get(url).then((response) => {
             props.setData(response.data);
-            if (props.selectedTab === 1 && props.selectedInsight !== 0) {
+            if (
+                response.data.length &&
+                props.selectedTab === 1 &&
+                props.selectedInsight !== 0
+            ) {
+                console.log(response);
                 const numInsights = Object.keys(
                     response.data[0].insights
                 ).length;
@@ -68,7 +73,13 @@ export default function SideFilter(props) {
                 props.setPageCount(pageCount);
             }
         });
-    }, [selectedDates, props.period, props.selectedTab, props.selectedInsight]);
+    }, [
+        selectedDates,
+        props.period,
+        props.selectedTab,
+        props.selectedInsight,
+        props.selectedCCDate,
+    ]);
 
     return (
         <Box
@@ -86,6 +97,22 @@ export default function SideFilter(props) {
                         <DateRange
                             selectedDates={selectedDates}
                             setSelectedDates={setSelectedDates}
+                        />
+                    )}
+                    {props.selectedTab === 1 && props.selectedInsight !== 0 && (
+                        <CustomDatePicker
+                            id="min-date"
+                            label="Min Date"
+                            minDate={MINIMUM_DATE}
+                            value={props.selectedCCDate}
+                            onChange={(value) => {
+                                props.setSelectedCCDate(
+                                    value ? moment(value) : null
+                                );
+                            }}
+                            views={["month", "year"].concat(
+                                props.period === "weekly" ? ["day"] : []
+                            )}
                         />
                     )}
                 </Grid>

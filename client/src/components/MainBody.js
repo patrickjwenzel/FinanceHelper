@@ -21,10 +21,11 @@ export default function MainBody(props) {
                 <Grid item xs>
                     <SideFilter
                         selectedTab={selectedTab}
-                        data={data}
                         setData={setData}
+                        setSelectedCCDate={setSelectedCCDate}
                         period={period}
                         setPeriod={setPeriod}
+                        selectedCCDate={selectedCCDate}
                         selectedInsight={selectedInsight}
                         setPageCount={setPageCount}
                     />
@@ -38,7 +39,6 @@ export default function MainBody(props) {
                         selectedInsight={selectedInsight}
                         setSelectedInsight={setSelectedInsight}
                         selectedCCDate={selectedCCDate}
-                        setSelectedCCDate={setSelectedCCDate}
                         pageCount={pageCount}
                     />
                 </Grid>
