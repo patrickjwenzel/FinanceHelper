@@ -11,10 +11,11 @@ import Heading from "./Heading";
 
 export default function CCTab(props) {
     const [dataset, setDataset] = useState(null);
+    const [heading, setHeading] = useState(null);
     const [page, setPage] = useState(1);
 
     const getHeading = () => {
-        const date = moment();
+        const date = props.selectedCCDate || moment();
         let str = "Spending by ";
         str += `${props.selectedInsight === 1 ? "category" : "place"} `;
         str += `in the ${
