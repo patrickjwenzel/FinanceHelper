@@ -2,6 +2,7 @@ const fs = require("fs");
 const _ = require("lodash");
 const path = require("path");
 const env = require("../../env");
+const recurring = require("../recurring");
 
 function iterateFilesInFolder(
     files,
@@ -14,7 +15,9 @@ function iterateFilesInFolder(
     amountIndex,
     shouldSplit,
     excludes,
-    isInsight = false
+    isInsight = false,
+    nameIndex,
+    isRecurring = false
 ) {
     const purchases = [];
 
@@ -31,11 +34,13 @@ function iterateFilesInFolder(
             dateIndex,
             amountIndex,
             shouldSplit,
-            excludes
+            excludes,
+            nameIndex,
+            req.params.type.toUpperCase()
         );
 
         if (totals) {
-            if (req.params.period === "monthly" || isInsight) {
+            if (req.params.period === "monthly" || isInsight || isRecurring) {
                 purchases.push(totals);
             } else {
                 _.forEach(totals, (total) => {
@@ -72,7 +77,24 @@ function scAndSSFileNoPrefix(prefix, file) {
     return fileNoPrefix;
 }
 
+function mergeBills(req) {
+    req.params.type = "utilities";
+    const utilities = recurring.getRecurringPayments(req);
+
+    req.params.type = "subscriptions";
+    const subscriptions = recurring.getRecurringPayments(req);
+
+    _.forEach(Object.keys(subscriptions), (date) => {
+        _.forEach(subscriptions[date], (subscription) => {
+            utilities[date].push(subscription);
+        });
+    });
+
+    return utilities;
+}
+
 module.exports.iterateFilesInFolder = iterateFilesInFolder;
 module.exports.ccFileNoPrefix = ccFileNoPrefix;
 module.exports.iterateBankFolder = iterateBankFolder;
 module.exports.scAndSSFileNoPrefix = scAndSSFileNoPrefix;
+module.exports.mergeBills = mergeBills;

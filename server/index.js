@@ -1,12 +1,13 @@
 // Package imports
 const express = require("express");
 const bodyParser = require("body-parser");
-const dotenv = require("dotenv");
-dotenv.config();
+const _ = require("lodash");
 
 // File imports
 const analyze = require("./apis/analyze");
 const ccTab = require("./apis/ccTab");
+const recurring = require("./apis/recurring");
+const commonUtils = require("./apis/utils/commonUtils");
 
 // App setup
 const PORT = process.env.PORT || 3001;
@@ -61,6 +62,53 @@ app.get("/ccTab/overall/:period/min/:min/max/:max", (req, res) => {
 // ---------- Insights ----------
 app.get("/ccTab/insight/:insight/period/:period/date/:date", (req, res) => {
     const totals = ccTab.getCCInsightPurchases(req);
+    res.json(totals);
+});
+
+// ---------- Recurring Payments ----------
+// ---------- Overall ----------
+app.get("/recurring/", (req, res) => {
+    const bills = commonUtils.mergeBills(req);
+
+    res.json(bills);
+});
+
+app.get("/recurring/min/:min", (req, res) => {
+    const bills = commonUtils.mergeBills(req);
+
+    res.json(bills);
+});
+
+app.get("/recurring/max/:max", (req, res) => {
+    const bills = commonUtils.mergeBills(req);
+
+    res.json(bills);
+});
+
+app.get("/recurring/min/:min/max/:max", (req, res) => {
+    const bills = commonUtils.mergeBills(req);
+
+    res.json(bills);
+});
+
+// ---------- By Type ----------
+app.get("/recurring/:type", (req, res) => {
+    const totals = recurring.getRecurringPayments(req);
+    res.json(totals);
+});
+
+app.get("/recurring/:type/min/:min", (req, res) => {
+    const totals = recurring.getRecurringPayments(req);
+    res.json(totals);
+});
+
+app.get("/recurring/:type/max/:max", (req, res) => {
+    const totals = recurring.getRecurringPayments(req);
+    res.json(totals);
+});
+
+app.get("/recurring/:type/min/:min/max/:max", (req, res) => {
+    const totals = recurring.getRecurringPayments(req);
     res.json(totals);
 });
 
