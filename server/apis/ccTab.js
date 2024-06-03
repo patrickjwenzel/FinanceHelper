@@ -34,7 +34,7 @@ function getCCInsightPurchases(req) {
 }
 
 function getPurchases(req, analysisFunc) {
-    const ccExcludes = commonUtils.getExcludes("CC_EXCLUDE");
+    const ccExcludes = env.vars["CC_EXCLUDE"];
     const ccFolderContents = commonUtils.iterateBankFolder("CC_CSV_LOCATION");
     const ccPurchases = commonUtils.iterateFilesInFolder(
         ccFolderContents.fileNames,

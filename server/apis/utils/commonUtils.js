@@ -48,21 +48,6 @@ function iterateFilesInFolder(
     return purchases;
 }
 
-function getExcludes(key) {
-    const excludes = [];
-
-    const splitExcludes = env.vars[key].split(";");
-
-    for (let i = 0; i <= splitExcludes.length - 2; i += 2) {
-        excludes.push({
-            index: Number(splitExcludes[i]),
-            value: splitExcludes[i + 1],
-        });
-    }
-
-    return excludes;
-}
-
 function ccFileNoPrefix(prefix, file) {
     const regex = new RegExp(`${env.vars[prefix]}|.CSV`);
     const fileNoPrefix = file.replace(regex, "").substring(0, 8);
@@ -81,6 +66,5 @@ function iterateBankFolder(location) {
 }
 
 module.exports.iterateFilesInFolder = iterateFilesInFolder;
-module.exports.getExcludes = getExcludes;
 module.exports.ccFileNoPrefix = ccFileNoPrefix;
 module.exports.iterateBankFolder = iterateBankFolder;
