@@ -65,6 +65,14 @@ function iterateBankFolder(location) {
     };
 }
 
+function scAndSSFileNoPrefix(prefix, file) {
+    const splitName = file.split("-");
+    const fileNoPrefix = `${splitName[3]}${splitName[4].substring(0, 2)}01`;
+
+    return fileNoPrefix;
+}
+
 module.exports.iterateFilesInFolder = iterateFilesInFolder;
 module.exports.ccFileNoPrefix = ccFileNoPrefix;
 module.exports.iterateBankFolder = iterateBankFolder;
+module.exports.scAndSSFileNoPrefix = scAndSSFileNoPrefix;

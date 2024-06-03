@@ -31,7 +31,7 @@ function mergeBanks(req) {
         bankFileUtils.bankFileAnalysis,
         req,
         "SC_CSV_PREFIX",
-        scAndSSFileNoPrefix,
+        commonUtils.scAndSSFileNoPrefix,
         0,
         3,
         false,
@@ -47,7 +47,7 @@ function mergeBanks(req) {
         bankFileUtils.bankFileAnalysis,
         req,
         "SS_CSV_PREFIX",
-        scAndSSFileNoPrefix,
+        commonUtils.scAndSSFileNoPrefix,
         0,
         3,
         false,
@@ -63,13 +63,6 @@ function mergeBanks(req) {
     });
 
     return purchases;
-}
-
-function scAndSSFileNoPrefix(prefix, file) {
-    const splitName = file.split("-");
-    const fileNoPrefix = `${splitName[3]}${splitName[4].substring(0, 2)}01`;
-
-    return fileNoPrefix;
 }
 
 module.exports.mergeBanks = mergeBanks;
