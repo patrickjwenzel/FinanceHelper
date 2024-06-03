@@ -1,20 +1,7 @@
-const fs = require("fs");
 const _ = require("lodash");
-const path = require("path");
 const moment = require("moment");
-const env = require("../../env");
 
 const bankFileUtils = require("./bankFileUtils");
-
-function iterateCCFolder(location) {
-    const bankFolder = path.join(env.vars[location]);
-    const bankFiles = fs.readdirSync(bankFolder);
-
-    return {
-        folderPath: bankFolder,
-        fileNames: bankFiles,
-    };
-}
 
 function ccFileAnalysis(
     file,
@@ -79,5 +66,4 @@ function ccFileAnalysis(
     return sum;
 }
 
-module.exports.iterateCCFolder = iterateCCFolder;
 module.exports.ccFileAnalysis = ccFileAnalysis;

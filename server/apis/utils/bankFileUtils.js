@@ -1,18 +1,5 @@
-const fs = require("fs");
 const _ = require("lodash");
-const path = require("path");
 const moment = require("moment");
-const env = require("../../env");
-
-function iterateBankFolder(location) {
-    const bankFolder = path.join(env.vars[location]);
-    const bankFiles = fs.readdirSync(bankFolder);
-
-    return {
-        folderPath: bankFolder,
-        fileNames: bankFiles,
-    };
-}
 
 function bankFileAnalysis(
     file,
@@ -135,7 +122,6 @@ function shouldBeIncluded(line, excludes, amountIndex) {
     return include;
 }
 
-module.exports.iterateBankFolder = iterateBankFolder;
 module.exports.bankFileAnalysis = bankFileAnalysis;
 module.exports.shouldBeIncluded = shouldBeIncluded;
 module.exports.shouldPass = shouldPass;

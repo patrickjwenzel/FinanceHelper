@@ -70,6 +70,17 @@ function ccFileNoPrefix(prefix, file) {
     return fileNoPrefix;
 }
 
+function iterateBankFolder(location) {
+    const bankFolder = path.join(env.vars[location]);
+    const bankFiles = fs.readdirSync(bankFolder);
+
+    return {
+        folderPath: bankFolder,
+        fileNames: bankFiles,
+    };
+}
+
 module.exports.iterateFilesInFolder = iterateFilesInFolder;
 module.exports.getExcludes = getExcludes;
 module.exports.ccFileNoPrefix = ccFileNoPrefix;
+module.exports.iterateBankFolder = iterateBankFolder;

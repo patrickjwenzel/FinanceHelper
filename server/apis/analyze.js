@@ -8,7 +8,7 @@ function mergeBanks(req) {
 
     // Sum up CC purchases
     const ccExcludes = commonUtils.getExcludes("CC_EXCLUDE");
-    const ccFolderContents = bankFileUtils.iterateBankFolder("CC_CSV_LOCATION");
+    const ccFolderContents = commonUtils.iterateBankFolder("CC_CSV_LOCATION");
     const ccPurchases = commonUtils.iterateFilesInFolder(
         ccFolderContents.fileNames,
         ccFolderContents.folderPath,
@@ -24,7 +24,7 @@ function mergeBanks(req) {
 
     // Sum up SC purchases
     const scExcludes = commonUtils.getExcludes("SC_EXCLUDE");
-    const scFolderContents = bankFileUtils.iterateBankFolder("SC_CSV_LOCATION");
+    const scFolderContents = commonUtils.iterateBankFolder("SC_CSV_LOCATION");
     const scPurchases = commonUtils.iterateFilesInFolder(
         scFolderContents.fileNames,
         scFolderContents.folderPath,
@@ -40,7 +40,7 @@ function mergeBanks(req) {
 
     // Sum up SS purchases
     const ssExcludes = commonUtils.getExcludes("SS_EXCLUDE");
-    const ssFolderContents = bankFileUtils.iterateBankFolder("SS_CSV_LOCATION");
+    const ssFolderContents = commonUtils.iterateBankFolder("SS_CSV_LOCATION");
     const ssPurchases = commonUtils.iterateFilesInFolder(
         ssFolderContents.fileNames,
         ssFolderContents.folderPath,
