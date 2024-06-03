@@ -1,6 +1,7 @@
 const fs = require("fs");
 const _ = require("lodash");
 const path = require("path");
+const env = require("../../env");
 
 function iterateFilesInFolder(
     files,
@@ -50,7 +51,7 @@ function iterateFilesInFolder(
 function getExcludes(key) {
     const excludes = [];
 
-    const splitExcludes = process.env[key].split(";");
+    const splitExcludes = env.vars[key].split(";");
 
     for (let i = 0; i <= splitExcludes.length - 2; i += 2) {
         excludes.push({
@@ -63,7 +64,7 @@ function getExcludes(key) {
 }
 
 function ccFileNoPrefix(prefix, file) {
-    const regex = new RegExp(`${process.env[prefix]}|.CSV`);
+    const regex = new RegExp(`${env.vars[prefix]}|.CSV`);
     const fileNoPrefix = file.replace(regex, "").substring(0, 8);
 
     return fileNoPrefix;

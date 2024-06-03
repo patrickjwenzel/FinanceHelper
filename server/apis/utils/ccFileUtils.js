@@ -2,11 +2,12 @@ const fs = require("fs");
 const _ = require("lodash");
 const path = require("path");
 const moment = require("moment");
+const env = require("../../env");
 
 const bankFileUtils = require("./bankFileUtils");
 
 function iterateCCFolder(location) {
-    const bankFolder = path.join(process.env[location]);
+    const bankFolder = path.join(env.vars[location]);
     const bankFiles = fs.readdirSync(bankFolder);
 
     return {

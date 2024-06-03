@@ -20,7 +20,6 @@ function getCCInsightPurchases(req) {
     const purchases = getPurchases(req, ccFileUtils.ccFileAnalysis);
     const arr = [];
 
-    console.log(purchases);
     _.forEach(purchases, (purchase) => {
         if (_.size(purchase.insights)) {
             _.forEach(Object.keys(purchase.insights), (key) => {
