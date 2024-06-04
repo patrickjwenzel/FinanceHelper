@@ -36,7 +36,7 @@ function iterateFilesInFolder(
             shouldSplit,
             excludes,
             nameIndex,
-            req.params.type.toUpperCase()
+            req.params?.type?.toUpperCase()
         );
 
         if (totals) {
