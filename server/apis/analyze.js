@@ -63,7 +63,7 @@ function mergeBanks(req) {
         purchases[purchase.date] += purchase.total;
     });
 
-    return purchases;
+    return commonUtils.sortBarChartData(purchases, req);
 }
 
 module.exports.mergeBanks = mergeBanks;

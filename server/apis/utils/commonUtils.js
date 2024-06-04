@@ -3,6 +3,7 @@ const _ = require("lodash");
 const path = require("path");
 const env = require("../../env");
 const recurring = require("../recurring");
+const moment = require("moment");
 
 function iterateFilesInFolder(
     files,
@@ -78,19 +79,62 @@ function scAndSSFileNoPrefix(prefix, file) {
 }
 
 function mergeBills(req) {
+    req.params.skipSort = true;
     req.params.type = "utilities";
     const utilities = recurring.getRecurringPayments(req);
 
     req.params.type = "subscriptions";
     const subscriptions = recurring.getRecurringPayments(req);
 
-    _.forEach(Object.keys(subscriptions), (date) => {
-        _.forEach(subscriptions[date], (subscription) => {
-            utilities[date].push(subscription);
+    if (req.params.chartType === "bar") {
+        _.forEach(Object.keys(subscriptions), (date) => {
+            utilities[date] += subscriptions[date];
+        });
+    }
+
+    return sortBarChartData(utilities, req);
+}
+
+function sortBarChartData(data, req) {
+    const createDate = (d) => {
+        let date = d;
+        date = d.split("/");
+        date = `${date[1]}-${date[0]}-01`;
+        return date;
+    };
+
+    let tempDataset = [];
+
+    _.forEach(Object.keys(data), (key) => {
+        tempDataset.push({
+            amount: data[key],
+            date: key,
         });
     });
 
-    return utilities;
+    let i, j, m;
+    for (i = 0; i < tempDataset.length - 1; i++) {
+        m = i;
+        for (j = i + 1; j < tempDataset.length; j++) {
+            const datej =
+                req.params.period === "monthly"
+                    ? moment(createDate(tempDataset[j].date))
+                    : moment(tempDataset[j].date);
+            const datemin =
+                req.params.period === "monthly"
+                    ? moment(createDate(tempDataset[m].date))
+                    : moment(tempDataset[m].date);
+
+            if (datej.diff(datemin) < 0) {
+                m = j;
+            }
+
+            let temp = tempDataset[m];
+            tempDataset[m] = tempDataset[i];
+            tempDataset[i] = temp;
+        }
+    }
+    return tempDataset;
 }
 
 module.exports.iterateFilesInFolder = iterateFilesInFolder;
@@ -98,3 +142,4 @@ module.exports.ccFileNoPrefix = ccFileNoPrefix;
 module.exports.iterateBankFolder = iterateBankFolder;
 module.exports.scAndSSFileNoPrefix = scAndSSFileNoPrefix;
 module.exports.mergeBills = mergeBills;
+module.exports.sortBarChartData = sortBarChartData;
