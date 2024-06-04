@@ -72,8 +72,6 @@ export default function SpendingBarChart(props) {
                 series={[
                     {
                         dataKey: "amount",
-                        label: "Seoul rainfall",
-                        // valueFormatter,
                     },
                 ]}
                 {...chartSetting}
