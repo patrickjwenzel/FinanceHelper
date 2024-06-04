@@ -1,8 +1,5 @@
 import { useState, useEffect } from "react";
-import moment from "moment";
 import { BarChart } from "@mui/x-charts/BarChart";
-
-const _ = require("lodash");
 
 export default function SpendingBarChart(props) {
     const [dataset, setDataSet] = useState(null);
@@ -10,13 +7,6 @@ export default function SpendingBarChart(props) {
     const chartSetting = {
         series: [{ dataKey: "amount", label: props.label }],
         height: 400,
-    };
-
-    const createDate = (d) => {
-        let date = d;
-        date = d.split("/");
-        date = `${date[1]}-${date[0]}-01`;
-        return date;
     };
 
     useEffect(() => {
