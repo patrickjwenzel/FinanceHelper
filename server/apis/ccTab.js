@@ -14,7 +14,7 @@ function getCCOverallPurchases(req) {
         purchases[purchase.date] = purchase.total * -1;
     });
 
-    return purchases;
+    return commonUtils.sortBarChartData(purchases, req);
 }
 
 function getCCInsightPurchases(req) {
