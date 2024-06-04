@@ -26,7 +26,6 @@ function getCCInsightPurchases(req) {
         date: null,
     };
 
-    console.log(purchases);
     _.forEach(purchases, (purchase) => {
         if (_.size(purchase.insights)) {
             _.forEach(Object.keys(purchase.insights), (key) => {
@@ -38,7 +37,6 @@ function getCCInsightPurchases(req) {
             retObj.date = purchase.date;
         }
     });
-    console.log(tempObj);
     retObj.chartData = commonUtils.sortPieChartData(tempObj, req);
 
     return retObj;

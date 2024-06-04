@@ -69,6 +69,7 @@ app.get("/ccTab/insight/:insight/period/:period/date/:date", (req, res) => {
 // ---------- Overall ----------
 app.get("/recurring/:chartType", (req, res) => {
     req.params.period = "monthly";
+    req.params.usePie = req.params.chartType === "pie";
     const bills = commonUtils.mergeBills(req);
 
     res.json(bills);
@@ -76,6 +77,7 @@ app.get("/recurring/:chartType", (req, res) => {
 
 app.get("/recurring/:chartType/date/:date", (req, res) => {
     req.params.period = "monthly";
+    req.params.usePie = req.params.chartType === "pie";
     const bills = commonUtils.mergeBills(req);
 
     res.json(bills);

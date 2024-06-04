@@ -90,9 +90,23 @@ function mergeBills(req) {
         _.forEach(Object.keys(subscriptions), (date) => {
             utilities[date] += subscriptions[date];
         });
+    } else {
+        _.forEach(Object.keys(subscriptions.insights), (bill) => {
+            if (utilities.insights[bill]) {
+                utilities.insights[bill] += subscriptions.insights[bill];
+            } else {
+                utilities.insights[bill] = subscriptions.insights[bill];
+            }
+        });
     }
+    console.log();
+    console.log(utilities);
+    console.log(req.params.usePie);
+    console.log();
 
-    return sortBarChartData(utilities, req);
+    return req.params.usePie
+        ? sortPieChartData(utilities)
+        : sortBarChartData(utilities, req);
 }
 
 function sortBarChartData(data, req) {
@@ -139,6 +153,7 @@ function sortBarChartData(data, req) {
 
 function sortPieChartData(data, req) {
     let tempDataset = [];
+    console.log(data);
 
     _.forEach(Object.keys(data.insights), (insight, i) => {
         tempDataset.push({

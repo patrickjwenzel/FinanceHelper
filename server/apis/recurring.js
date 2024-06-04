@@ -101,6 +101,18 @@ function getRecurringPayments(req) {
 
         const returnArr = commonUtils.sortBarChartData(returnObj, req);
         return req.params.skipSort === true ? returnObj : returnArr;
+    } else {
+        const key = Object.keys(tempObj)[0]
+
+        returnObj.insights = {}
+        returnObj.date = key
+
+        _.forEach(tempObj[key], (bill) => {
+            returnObj.insights[bill.name] = bill.amount
+        })
+
+        const returnArr = commonUtils.sortPieChartData(returnObj);
+        return req.params.skipSort === true ? returnObj : returnArr;
     }
 }
 

@@ -46,6 +46,18 @@ export default function SideFilter(props) {
         );
     };
 
+    const addBillDateToURL = () => {
+        if (props.billChartType === "pie") {
+            return `/date/${moment(props.selectedBillDate || today).format(
+                "YYYY-MM-DD"
+            )}`;
+        } else {
+            return props.selectedBillDate
+                ? `/date/${moment(props.selectedBillDate).format("YYYY-MM-DD")}`
+                : "";
+        }
+    };
+
     useEffect(() => {
         props.setData(null);
         props.setPageCount(null);
@@ -67,9 +79,7 @@ export default function SideFilter(props) {
         } else if (props.selectedTab === 3) {
             url += `/recurring/${props.billChartType}`;
             url += props.billType === "all" ? "" : `/${props.billType}`;
-            url += props.selectedBillDate
-                ? `/date/${moment(props.selectedBillDate).format("YYYY-MM-DD")}`
-                : "";
+            url += addBillDateToURL();
         }
 
         if (url) {

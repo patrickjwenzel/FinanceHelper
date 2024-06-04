@@ -3,28 +3,29 @@ import { PieChart } from "@mui/x-charts/PieChart";
 
 export default function SpendingPieChart(props) {
     useEffect(() => {
-        if (props.data && props.data?.chartData) {
-            let tempDataset = props.data.chartData;
+        if (!props.usePropsData) {
+            if (props.data) {
+                let tempDataset = props.data.chartData;
 
-            if (props.pageCount) {
-                const mult = props.page * 6;
-                tempDataset = tempDataset.slice(mult - 6, mult);
+                if (props.pageCount) {
+                    const mult = props.page * 6;
+                    tempDataset = tempDataset.slice(mult - 6, mult);
+                }
+
+                props.setDataset(tempDataset);
+            } else {
+                props.setDataset(null);
             }
-
-            props.setDataset(tempDataset);
-        } else {
-            props.setDataset(null);
         }
     }, [props.data, props.pageCount, props.page]);
 
     return (
-        props.dataset && (
+        (props.dataset || (props.usePropsData && props.data)) && (
             <PieChart
-                label="help"
                 height={400}
                 series={[
                     {
-                        data: props.dataset,
+                        data: props.usePropsData ? props.data : props.dataset,
                     },
                 ]}
                 sx={{
