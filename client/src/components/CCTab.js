@@ -11,7 +11,6 @@ import Heading from "./Heading";
 
 export default function CCTab(props) {
     const [dataset, setDataset] = useState(null);
-    const [heading, setHeading] = useState(null);
     const [page, setPage] = useState(1);
 
     const getHeading = () => {
