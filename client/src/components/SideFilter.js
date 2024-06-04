@@ -67,7 +67,9 @@ export default function SideFilter(props) {
         } else if (props.selectedTab === 3) {
             url += `/recurring/${props.billChartType}`;
             url += props.billType === "all" ? "" : `/${props.billType}`;
-            url += addDatesToURL(url);
+            url += props.selectedBillDate
+                ? `/date/${moment(props.selectedBillDate).format("YYYY-MM-DD")}`
+                : "";
         }
 
         if (url) {
@@ -97,6 +99,7 @@ export default function SideFilter(props) {
         props.selectedCCDate,
         props.billType,
         props.billChartType,
+        props.selectedBillDate,
     ]);
 
     return (
@@ -117,11 +120,9 @@ export default function SideFilter(props) {
                             setSelectedDates={setSelectedDates}
                         />
                     )}
-                    {((props.selectedTab === 1 &&
-                        props.selectedInsight !== 0) ||
-                        props.selectedTab === 3) && (
+                    {props.selectedTab === 1 && props.selectedInsight !== 0 && (
                         <CustomDatePicker
-                            id="min-date"
+                            id="min-cc-date"
                             label="Min Date"
                             minDate={MINIMUM_DATE}
                             value={props.selectedCCDate}
@@ -144,6 +145,18 @@ export default function SideFilter(props) {
                 )}
                 {props.selectedTab === 3 && (
                     <>
+                        <CustomDatePicker
+                            id="min-bill-date"
+                            label="Min Date"
+                            minDate={MINIMUM_DATE}
+                            value={props.selectedBillDate}
+                            onChange={(value) => {
+                                props.setSelectedBillDate(
+                                    value ? moment(value) : null
+                                );
+                            }}
+                            views={["month", "year"]}
+                        />
                         <BillTypeSelector
                             billType={props.billType}
                             setBillType={props.setBillType}

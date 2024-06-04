@@ -74,21 +74,7 @@ app.get("/recurring/:chartType", (req, res) => {
     res.json(bills);
 });
 
-app.get("/recurring/:chartType/min/:min", (req, res) => {
-    req.params.period = "monthly";
-    const bills = commonUtils.mergeBills(req);
-
-    res.json(bills);
-});
-
-app.get("/recurring/:chartType/max/:max", (req, res) => {
-    req.params.period = "monthly";
-    const bills = commonUtils.mergeBills(req);
-
-    res.json(bills);
-});
-
-app.get("/recurring/:chartType/min/:min/max/:max", (req, res) => {
+app.get("/recurring/:chartType/date/:date", (req, res) => {
     req.params.period = "monthly";
     const bills = commonUtils.mergeBills(req);
 
@@ -102,19 +88,7 @@ app.get("/recurring/:chartType/:type", (req, res) => {
     res.json(totals);
 });
 
-app.get("/recurring/:chartType/:type/min/:min", (req, res) => {
-    req.params.period = "monthly";
-    const totals = recurring.getRecurringPayments(req);
-    res.json(totals);
-});
-
-app.get("/recurring/:chartType/:type/max/:max", (req, res) => {
-    req.params.period = "monthly";
-    const totals = recurring.getRecurringPayments(req);
-    res.json(totals);
-});
-
-app.get("/recurring/:chartType/:type/min/:min/max/:max", (req, res) => {
+app.get("/recurring/:chartType/:type/date/:date", (req, res) => {
     req.params.period = "monthly";
     const totals = recurring.getRecurringPayments(req);
     res.json(totals);

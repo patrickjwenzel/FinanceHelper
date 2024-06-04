@@ -16,6 +16,7 @@ export default function MainBody(props) {
     const [pageCount, setPageCount] = useState(1);
     const [billType, setBillType] = useState("all");
     const [billChartType, setBillChartType] = useState("bar");
+    const [selectedBillDate, setSelectedBillDate] = useState(null);
 
     return (
         <Box sx={{ flexGrow: 1, marginX: 3 }}>
@@ -24,16 +25,18 @@ export default function MainBody(props) {
                     <SideFilter
                         selectedTab={selectedTab}
                         setData={setData}
-                        setSelectedCCDate={setSelectedCCDate}
                         period={period}
                         setPeriod={setPeriod}
                         selectedCCDate={selectedCCDate}
+                        setSelectedCCDate={setSelectedCCDate}
                         selectedInsight={selectedInsight}
                         setPageCount={setPageCount}
                         billType={billType}
                         setBillType={setBillType}
                         billChartType={billChartType}
                         setBillChartType={setBillChartType}
+                        selectedBillDate={selectedBillDate}
+                        setSelectedBillDate={setSelectedBillDate}
                     />
                 </Grid>
                 <Grid item xs={8}>
