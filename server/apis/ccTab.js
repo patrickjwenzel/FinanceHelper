@@ -20,18 +20,28 @@ function getCCOverallPurchases(req) {
 function getCCInsightPurchases(req) {
     const purchases = getPurchases(req, ccFileUtils.ccFileAnalysis);
     const arr = [];
+    let tempObj = null;
+    const retObj = {
+        chartData: null,
+        date: null,
+    };
 
+    console.log(purchases);
     _.forEach(purchases, (purchase) => {
         if (_.size(purchase.insights)) {
             _.forEach(Object.keys(purchase.insights), (key) => {
                 purchase.insights[key] *= -1;
             });
-
             arr.push(purchase);
+
+            tempObj = purchase;
+            retObj.date = purchase.date;
         }
     });
+    console.log(tempObj);
+    retObj.chartData = commonUtils.sortPieChartData(tempObj, req);
 
-    return arr;
+    return retObj;
 }
 
 function getPurchases(req, analysisFunc) {

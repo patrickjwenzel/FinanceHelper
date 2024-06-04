@@ -1,36 +1,10 @@
 import { useEffect } from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 
-const _ = require("lodash");
-
 export default function SpendingPieChart(props) {
     useEffect(() => {
-        if (props.data && props.data[0]?.insights) {
-            let tempDataset = [];
-
-            const insights = props.data[0];
-
-            _.forEach(Object.keys(insights.insights), (insight, i) => {
-                tempDataset.push({
-                    id: i,
-                    value: insights.insights[insight],
-                    label: insight,
-                });
-            });
-
-            let i, j, m;
-            for (i = 0; i < tempDataset.length - 1; i++) {
-                m = i;
-                for (j = i + 1; j < tempDataset.length; j++) {
-                    if (tempDataset[j].value >= tempDataset[m].value) {
-                        m = j;
-                    }
-
-                    let temp = tempDataset[m];
-                    tempDataset[m] = tempDataset[i];
-                    tempDataset[i] = temp;
-                }
-            }
+        if (props.data && props.data?.chartData) {
+            let tempDataset = props.data.chartData;
 
             if (props.pageCount) {
                 const mult = props.page * 6;

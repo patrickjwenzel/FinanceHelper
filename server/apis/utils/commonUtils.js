@@ -137,9 +137,38 @@ function sortBarChartData(data, req) {
     return tempDataset;
 }
 
+function sortPieChartData(data, req) {
+    let tempDataset = [];
+
+    _.forEach(Object.keys(data.insights), (insight, i) => {
+        tempDataset.push({
+            id: i,
+            value: data.insights[insight],
+            label: insight,
+        });
+    });
+
+    let i, j, m;
+    for (i = 0; i < tempDataset.length - 1; i++) {
+        m = i;
+        for (j = i + 1; j < tempDataset.length; j++) {
+            if (tempDataset[j].value >= tempDataset[m].value) {
+                m = j;
+            }
+
+            let temp = tempDataset[m];
+            tempDataset[m] = tempDataset[i];
+            tempDataset[i] = temp;
+        }
+    }
+
+    return tempDataset;
+}
+
 module.exports.iterateFilesInFolder = iterateFilesInFolder;
 module.exports.ccFileNoPrefix = ccFileNoPrefix;
 module.exports.iterateBankFolder = iterateBankFolder;
 module.exports.scAndSSFileNoPrefix = scAndSSFileNoPrefix;
 module.exports.mergeBills = mergeBills;
 module.exports.sortBarChartData = sortBarChartData;
+module.exports.sortPieChartData = sortPieChartData;

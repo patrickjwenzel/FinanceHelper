@@ -25,7 +25,7 @@ export default function SideFilter(props) {
         return url;
     };
 
-    const addDatesToURL = (url) => {
+    const addDatesToURL = () => {
         let newURL = "";
         if (selectedDates.min) {
             newURL += `/min/${moment(selectedDates.min).format("YYYY-MM-DD")}`;
@@ -76,12 +76,12 @@ export default function SideFilter(props) {
             axios.get(url).then((response) => {
                 props.setData(response.data);
                 if (
-                    response.data.length &&
+                    response.data?.chartData?.length &&
                     props.selectedTab === 1 &&
                     props.selectedInsight !== 0
                 ) {
                     const numInsights = Object.keys(
-                        response.data[0].insights
+                        response.data.chartData
                     ).length;
 
                     let pageCount = Math.floor(numInsights / 6);
