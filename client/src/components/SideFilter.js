@@ -7,6 +7,7 @@ import axios from "axios";
 import PeriodSelector from "./PeriodSelector";
 import DateRange from "./DateRange";
 import CustomDatePicker from "./CustomDatePicker";
+import BillTypeSelector from "./BillTypeSelector";
 
 const today = moment();
 const MINIMUM_DATE = moment("01/01/2024");
@@ -17,16 +18,22 @@ export default function SideFilter(props) {
         max: null,
     });
 
-    const addTabAndDatesToURL = (tab) => {
+    const addTabToURL = (tab) => {
         let url = `/${tab}/${props.period}`;
+
+        return url;
+    };
+
+    const addDatesToURL = (url) => {
+        let newURL = "";
         if (selectedDates.min) {
-            url += `/min/${moment(selectedDates.min).format("YYYY-MM-DD")}`;
+            newURL += `/min/${moment(selectedDates.min).format("YYYY-MM-DD")}`;
         }
 
         if (selectedDates.max) {
-            url += `/max/${moment(selectedDates.max).format("YYYY-MM-DD")}`;
+            newURL += `/max/${moment(selectedDates.max).format("YYYY-MM-DD")}`;
         }
-        return url;
+        return newURL;
     };
 
     const addInsightToURL = (selectedInsight) => {
@@ -44,41 +51,50 @@ export default function SideFilter(props) {
         let url = "";
 
         if (props.selectedTab === 0) {
-            url = addTabAndDatesToURL("analysis");
+            url = addTabToURL("analysis");
+            url += addDatesToURL(url);
         } else if (props.selectedTab === 1) {
             url += "ccTab";
 
-            ///ccTab/insight/:insight/period/:period/date/:date
             if (props.selectedInsight === 0) {
-                url += addTabAndDatesToURL("overall");
+                url += addTabToURL("overall");
+                url += addDatesToURL(url);
             } else {
                 url += addInsightToURL(props.selectedInsight);
             }
+        } else if (props.selectedTab === 2) {
+        } else if (props.selectedTab === 3) {
+            url += "/recurring";
+            url += props.billType === "all" ? "" : `/${props.billType}`;
+            url += addDatesToURL(url);
         }
 
-        axios.get(url).then((response) => {
-            props.setData(response.data);
-            if (
-                response.data.length &&
-                props.selectedTab === 1 &&
-                props.selectedInsight !== 0
-            ) {
-                console.log(response);
-                const numInsights = Object.keys(
-                    response.data[0].insights
-                ).length;
-                console.log(numInsights);
-                let pageCount = Math.floor(numInsights / 6);
-                pageCount += numInsights % 6 ? 1 : 0;
-                props.setPageCount(pageCount);
-            }
-        });
+        if (url) {
+            axios.get(url).then((response) => {
+                props.setData(response.data);
+                if (
+                    response.data.length &&
+                    props.selectedTab === 1 &&
+                    props.selectedInsight !== 0
+                ) {
+                    const numInsights = Object.keys(
+                        response.data[0].insights
+                    ).length;
+
+                    let pageCount = Math.floor(numInsights / 6);
+
+                    pageCount += numInsights % 6 ? 1 : 0;
+                    props.setPageCount(pageCount);
+                }
+            });
+        }
     }, [
         selectedDates,
         props.period,
         props.selectedTab,
         props.selectedInsight,
         props.selectedCCDate,
+        props.billType,
     ]);
 
     return (
@@ -99,7 +115,9 @@ export default function SideFilter(props) {
                             setSelectedDates={setSelectedDates}
                         />
                     )}
-                    {props.selectedTab === 1 && props.selectedInsight !== 0 && (
+                    {((props.selectedTab === 1 &&
+                        props.selectedInsight !== 0) ||
+                        props.selectedTab === 3) && (
                         <CustomDatePicker
                             id="min-date"
                             label="Min Date"
@@ -116,10 +134,18 @@ export default function SideFilter(props) {
                         />
                     )}
                 </Grid>
-                <PeriodSelector
-                    period={props.period}
-                    setPeriod={props.setPeriod}
-                />
+                {props.selectedTab !== 3 && (
+                    <PeriodSelector
+                        period={props.period}
+                        setPeriod={props.setPeriod}
+                    />
+                )}
+                {props.selectedTab === 3 && (
+                    <BillTypeSelector
+                        billType={props.billType}
+                        setBillType={props.setBillType}
+                    />
+                )}
             </Box>
         </Box>
     );

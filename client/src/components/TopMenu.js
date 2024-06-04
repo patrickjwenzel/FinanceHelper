@@ -21,6 +21,10 @@ export default function TopMenu() {
             icon: <MUIIcons.AccountBalance />,
             label: process.env.REACT_APP_BANK_NAME,
         },
+        {
+            icon: <MUIIcons.RotateRight />,
+            label: process.env.REACT_APP_RECURRING_PAYMENTS,
+        },
     ];
 
     const handleChange = (event, newTab) => {
