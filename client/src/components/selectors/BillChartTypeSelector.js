@@ -13,7 +13,7 @@ export default function BillChartTypeSelector(props) {
                 <Button
                     sx={{
                         backgroundColor:
-                            props.billChartType === "bar" ? "#2380BF" : "gray",
+                            props.billChartType === "bar" ? "#1976D2" : "gray",
                     }}
                     onClick={() => props.setBillChartType("bar")}
                 >
@@ -22,7 +22,7 @@ export default function BillChartTypeSelector(props) {
                 <Button
                     sx={{
                         backgroundColor:
-                            props.billType === "pie" ? "#2380BF" : "gray",
+                            props.billChartType === "pie" ? "#1976D2" : "gray",
                     }}
                     onClick={() => props.setBillChartType("pie")}
                 >

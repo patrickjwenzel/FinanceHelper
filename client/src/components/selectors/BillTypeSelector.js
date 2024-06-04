@@ -13,7 +13,7 @@ export default function BillTypeSelector(props) {
                 <Button
                     sx={{
                         backgroundColor:
-                            props.billType === "all" ? "#2380BF" : "gray",
+                            props.billType === "all" ? "#1976D2" : "gray",
                     }}
                     onClick={() => props.setBillType("all")}
                 >
@@ -33,7 +33,7 @@ export default function BillTypeSelector(props) {
                 <Button
                     sx={{
                         backgroundColor:
-                            props.billType === "utilities" ? "#2380BF" : "gray",
+                            props.billType === "utilities" ? "#1976D2" : "gray",
                     }}
                     onClick={() => props.setBillType("utilities")}
                 >

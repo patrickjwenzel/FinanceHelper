@@ -13,7 +13,7 @@ export default function PeriodSelector(props) {
                 <Button
                     sx={{
                         backgroundColor:
-                            props.period === "monthly" ? "#2380BF" : "gray",
+                            props.period === "monthly" ? "#1976D2" : "gray",
                     }}
                     onClick={() => props.setPeriod("monthly")}
                 >
@@ -22,7 +22,7 @@ export default function PeriodSelector(props) {
                 <Button
                     sx={{
                         backgroundColor:
-                            props.period === "weekly" ? "#2380BF" : "gray",
+                            props.period === "weekly" ? "#1976D2" : "gray",
                     }}
                     onClick={() => props.setPeriod("weekly")}
                 >
