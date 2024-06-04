@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import SpendingBarChart from "./charts/SpendingBarChart";
+import SpendingBarChart from "../charts/SpendingBarChart";
 import CCTab from "./CCTab";
 import RecurringTab from "./RecurringTab";
 
@@ -28,9 +28,9 @@ export default function ChartTab(props) {
                     pageCount={props.pageCount}
                 />
             )}
-            {props.selectedTab === 2 && (
+            {/* {props.selectedTab === 2 && (
                 <SpendingBarChart data={props.data} label="Cash Flow ($)" />
-            )}
+            )} */}
             {props.selectedTab === 3 && (
                 <RecurringTab
                     data={props.data}

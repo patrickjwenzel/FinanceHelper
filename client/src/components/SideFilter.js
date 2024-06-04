@@ -4,11 +4,11 @@ import moment from "moment";
 import Grid from "@mui/material/Grid";
 import axios from "axios";
 
-import PeriodSelector from "./PeriodSelector";
-import DateRange from "./DateRange";
-import CustomDatePicker from "./CustomDatePicker";
-import BillTypeSelector from "./BillTypeSelector";
-import BillChartTypeSelector from "./BillChartTypeSelector";
+import PeriodSelector from "./selectors/PeriodSelector";
+import DateRange from "./dates/DateRange";
+import CustomDatePicker from "./dates/CustomDatePicker";
+import BillTypeSelector from "./selectors/BillTypeSelector";
+import BillChartTypeSelector from "./selectors/BillChartTypeSelector";
 
 const today = moment();
 const MINIMUM_DATE = moment("01/01/2024");

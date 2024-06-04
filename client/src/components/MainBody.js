@@ -2,7 +2,7 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-import ChartTab from "./ChartTab";
+import ChartTab from "./tabs/ChartTab";
 import SideFilter from "./SideFilter";
 
 const _ = require("lodash");

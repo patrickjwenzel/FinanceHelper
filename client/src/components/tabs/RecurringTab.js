@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-import SpendingBarChart from "./charts/SpendingBarChart";
+import SpendingBarChart from "../charts/SpendingBarChart";
 
 export default function RecurringTab(props) {
     const getChartLabel = () => {

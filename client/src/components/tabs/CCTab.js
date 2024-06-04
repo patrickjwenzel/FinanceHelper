@@ -4,10 +4,10 @@ import * as MUIIcons from "@mui/icons-material";
 import Pagination from "@mui/material/Pagination";
 import moment from "moment";
 
-import TabMenu from "./TabMenu";
-import SpendingBarChart from "./charts/SpendingBarChart";
-import SpendingPieChart from "./charts/SpendingPieChart";
-import Heading from "./Heading";
+import TabMenu from "../TabMenu";
+import SpendingBarChart from "../charts/SpendingBarChart";
+import SpendingPieChart from "../charts/SpendingPieChart";
+import Heading from "../Heading";
 
 export default function CCTab(props) {
     const [dataset, setDataset] = useState(null);
