@@ -99,10 +99,6 @@ function mergeBills(req) {
             }
         });
     }
-    console.log();
-    console.log(utilities);
-    console.log(req.params.usePie);
-    console.log();
 
     return req.params.usePie
         ? sortPieChartData(utilities)
@@ -153,7 +149,6 @@ function sortBarChartData(data, req) {
 
 function sortPieChartData(data, req) {
     let tempDataset = [];
-    console.log(data);
 
     _.forEach(Object.keys(data.insights), (insight, i) => {
         tempDataset.push({
