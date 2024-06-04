@@ -3,6 +3,7 @@ const _ = require("lodash");
 const bankFileUtils = require("./utils/bankFileUtils");
 const commonUtils = require("./utils/commonUtils");
 const ccFileUtils = require("./utils/ccFileUtils");
+const env = require("../env");
 
 function getCCOverallPurchases(req) {
     const purchases = {};

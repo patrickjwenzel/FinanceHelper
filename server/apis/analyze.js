@@ -2,6 +2,7 @@ const _ = require("lodash");
 
 const bankFileUtils = require("./utils/bankFileUtils");
 const commonUtils = require("./utils/commonUtils");
+const env = require("../env");
 
 function mergeBanks(req) {
     const purchases = {};
