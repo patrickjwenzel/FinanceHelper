@@ -15,6 +15,7 @@ export default function MainBody(props) {
     const [selectedCCDate, setSelectedCCDate] = useState(null);
     const [pageCount, setPageCount] = useState(1);
     const [billType, setBillType] = useState("all");
+    const [billChartType, setBillChartType] = useState("bar");
 
     return (
         <Box sx={{ flexGrow: 1, marginX: 3 }}>
@@ -31,6 +32,8 @@ export default function MainBody(props) {
                         setPageCount={setPageCount}
                         billType={billType}
                         setBillType={setBillType}
+                        billChartType={billChartType}
+                        setBillChartType={setBillChartType}
                     />
                 </Grid>
                 <Grid item xs={8}>
@@ -43,6 +46,10 @@ export default function MainBody(props) {
                         setSelectedInsight={setSelectedInsight}
                         selectedCCDate={selectedCCDate}
                         pageCount={pageCount}
+                        billType={billType}
+                        setBillType={setBillType}
+                        billChartType={billChartType}
+                        setBillChartType={setBillChartType}
                     />
                 </Grid>
             </Grid>

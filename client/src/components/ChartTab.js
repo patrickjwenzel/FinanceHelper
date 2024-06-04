@@ -1,8 +1,7 @@
 import Box from "@mui/material/Box";
 import SpendingBarChart from "./charts/SpendingBarChart";
 import CCTab from "./CCTab";
-
-const _ = require("lodash");
+import RecurringTab from "./RecurringTab";
 
 export default function ChartTab(props) {
     return (
@@ -27,6 +26,15 @@ export default function ChartTab(props) {
                     data={props.data}
                     period={props.period}
                     pageCount={props.pageCount}
+                />
+            )}
+            {props.selectedTab === 2 && (
+                <SpendingBarChart data={props.data} label="Cash Flow ($)" />
+            )}
+            {props.selectedTab === 3 && (
+                <RecurringTab
+                    data={props.data}
+                    billChartType={props.billChartType}
                 />
             )}
         </Box>

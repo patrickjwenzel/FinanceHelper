@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const moment = require("moment");
 
 const recurringFileUtils = require("./utils/recurringFileUtils");
 const commonUtils = require("./utils/commonUtils");
@@ -63,10 +64,12 @@ function getRecurringPayments(req) {
     );
 
     const purchases = ccPurchases.concat(scPurchases).concat(ssPurchases);
-    const obj = {};
+    const tempObj = {};
+    const returnObj = {};
 
     _.forEach(purchases, (purchase) => {
         if (purchase.date) {
+            const date = moment(purchase.date).format("MM/YYYY");
             const arr = [];
 
             _.forEach(Object.keys(purchase.insights), (key) => {
@@ -76,15 +79,29 @@ function getRecurringPayments(req) {
                 });
             });
 
-            if (obj[purchase.date] === undefined) {
-                obj[purchase.date] = arr;
+            if (tempObj[date] === undefined) {
+                tempObj[date] = arr;
             } else {
-                obj[purchase.date] = obj[purchase.date].concat(arr);
+                tempObj[date] = tempObj[date].concat(arr);
             }
         }
     });
 
-    return obj;
+    if (req.params.chartType === "bar") {
+        _.forEach(Object.keys(tempObj), (key) => {
+            const obj = tempObj[key];
+            let sum = 0;
+
+            _.forEach(obj, (bill) => {
+                sum += bill.amount;
+            });
+
+            returnObj[key] = sum;
+        });
+
+        const returnArr = commonUtils.sortBarChartData(returnObj, req);
+        return req.params.skipSort === true ? returnObj : returnArr;
+    }
 }
 
 module.exports.getRecurringPayments = getRecurringPayments;

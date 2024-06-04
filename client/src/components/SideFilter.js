@@ -8,6 +8,7 @@ import PeriodSelector from "./PeriodSelector";
 import DateRange from "./DateRange";
 import CustomDatePicker from "./CustomDatePicker";
 import BillTypeSelector from "./BillTypeSelector";
+import BillChartTypeSelector from "./BillChartTypeSelector";
 
 const today = moment();
 const MINIMUM_DATE = moment("01/01/2024");
@@ -64,7 +65,7 @@ export default function SideFilter(props) {
             }
         } else if (props.selectedTab === 2) {
         } else if (props.selectedTab === 3) {
-            url += "/recurring";
+            url += `/recurring/${props.billChartType}`;
             url += props.billType === "all" ? "" : `/${props.billType}`;
             url += addDatesToURL(url);
         }
@@ -95,6 +96,7 @@ export default function SideFilter(props) {
         props.selectedInsight,
         props.selectedCCDate,
         props.billType,
+        props.billChartType,
     ]);
 
     return (
@@ -141,10 +143,16 @@ export default function SideFilter(props) {
                     />
                 )}
                 {props.selectedTab === 3 && (
-                    <BillTypeSelector
-                        billType={props.billType}
-                        setBillType={props.setBillType}
-                    />
+                    <>
+                        <BillTypeSelector
+                            billType={props.billType}
+                            setBillType={props.setBillType}
+                        />
+                        <BillChartTypeSelector
+                            billChartType={props.billChartType}
+                            setBillChartType={props.setBillChartType}
+                        />
+                    </>
                 )}
             </Box>
         </Box>
