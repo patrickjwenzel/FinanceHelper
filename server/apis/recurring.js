@@ -7,23 +7,27 @@ const env = require("../env");
 
 function getRecurringPayments(req) {
     // Sum up CC purchases
-    const ccExcludes = env.vars["CC_EXCLUDE"];
-    const ccFolderContents = commonUtils.iterateBankFolder("CC_CSV_LOCATION");
-    const ccPurchases = commonUtils.iterateFilesInFolder(
-        ccFolderContents.fileNames,
-        ccFolderContents.folderPath,
-        recurringFileUtils.bankFileAnalysisRecurring,
-        req,
-        "CC_CSV_PREFIX",
-        commonUtils.ccFileNoPrefix,
-        1,
-        5,
-        true,
-        ccExcludes,
-        false,
-        2,
-        true
-    );
+    let ccPurchases = null;
+    if (!req.params.showPaychecks) {
+        const ccExcludes = env.vars["CC_EXCLUDE"];
+        const ccFolderContents =
+            commonUtils.iterateBankFolder("CC_CSV_LOCATION");
+        ccPurchases = commonUtils.iterateFilesInFolder(
+            ccFolderContents.fileNames,
+            ccFolderContents.folderPath,
+            recurringFileUtils.bankFileAnalysisRecurring,
+            req,
+            "CC_CSV_PREFIX",
+            commonUtils.ccFileNoPrefix,
+            1,
+            5,
+            true,
+            ccExcludes,
+            false,
+            2,
+            true
+        );
+    }
 
     // Sum up SC purchases
     const scExcludes = env.vars["SC_EXCLUDE"];
@@ -63,7 +67,12 @@ function getRecurringPayments(req) {
         true
     );
 
-    const purchases = ccPurchases.concat(scPurchases).concat(ssPurchases);
+    let purchases = scPurchases.concat(ssPurchases);
+
+    if (ccPurchases) {
+        purchases = purchases.concat(ccPurchases);
+    }
+
     const tempObj = {};
     const returnObj = {};
 
@@ -102,18 +111,58 @@ function getRecurringPayments(req) {
         const returnArr = commonUtils.sortBarChartData(returnObj, req);
         return req.params.skipSort === true ? returnObj : returnArr;
     } else {
-        const key = Object.keys(tempObj)[0]
+        const key = Object.keys(tempObj)[0];
 
-        returnObj.insights = {}
-        returnObj.date = key
+        returnObj.insights = {};
+        returnObj.date = key;
 
         _.forEach(tempObj[key], (bill) => {
-            returnObj.insights[bill.name] = bill.amount
-        })
+            returnObj.insights[bill.name] = bill.amount;
+        });
 
         const returnArr = commonUtils.sortPieChartData(returnObj);
         return req.params.skipSort === true ? returnObj : returnArr;
     }
 }
 
+function getReturnJson(showPaychecks, req, bills) {
+    if (showPaychecks && req.params.chartType === "bar") {
+        req.params.showPaychecks = true;
+
+        let paychecks = getRecurringPayments(req);
+        paychecks = commonUtils.sortBarChartData(paychecks, req);
+
+        const incomeAndBills = mergeIncomeAndBills(paychecks, bills);
+
+        return incomeAndBills;
+    } else {
+        return bills;
+    }
+}
+
+function mergeIncomeAndBills(income, bills) {
+    const chartObj = {
+        dataSet: [],
+        chartSettings: [
+            { dataKey: "incomeAmount", label: "Income" },
+            { dataKey: "billAmount", label: "Bills" },
+            { dataKey: "difference", label: "Difference" },
+        ],
+    };
+
+    _.forEach(income, (paycheck, i) => {
+        const bill = bills[i];
+        chartObj.dataSet.push({
+            date: bill.date,
+            billAmount: bill.amount,
+            incomeAmount: paycheck.amount * -1,
+            difference: paycheck.amount * -1 - bill.amount,
+        });
+    });
+
+    return chartObj;
+}
+
 module.exports.getRecurringPayments = getRecurringPayments;
+module.exports.getReturnJson = getReturnJson;
+module.exports.mergeIncomeAndBills = mergeIncomeAndBills;

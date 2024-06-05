@@ -9,6 +9,7 @@ import DateRange from "./dates/DateRange";
 import CustomDatePicker from "./dates/CustomDatePicker";
 import BillTypeSelector from "./selectors/BillTypeSelector";
 import BillChartTypeSelector from "./selectors/BillChartTypeSelector";
+import PaycheckOnSwitch from "./selectors/PaycheckOnSwitch";
 
 const today = moment();
 const MINIMUM_DATE = moment("01/01/2024");
@@ -18,6 +19,7 @@ export default function SideFilter(props) {
         min: null,
         max: null,
     });
+    const [showPaychecks, setShowPaychecks] = useState(false);
 
     const addTabToURL = (tab) => {
         let url = `/${tab}/${props.period}`;
@@ -80,6 +82,7 @@ export default function SideFilter(props) {
             url += `/recurring/${props.billChartType}`;
             url += props.billType === "all" ? "" : `/${props.billType}`;
             url += addBillDateToURL();
+            url += `/showPaychecks/${showPaychecks}`;
         }
 
         if (url) {
@@ -110,6 +113,7 @@ export default function SideFilter(props) {
         props.billType,
         props.billChartType,
         props.selectedBillDate,
+        showPaychecks,
     ]);
 
     return (
@@ -174,7 +178,14 @@ export default function SideFilter(props) {
                         <BillChartTypeSelector
                             billChartType={props.billChartType}
                             setBillChartType={props.setBillChartType}
+                            setData={props.setData}
                         />
+                        {props.billChartType === "bar" && (
+                            <PaycheckOnSwitch
+                                showPaychecks={showPaychecks}
+                                setShowPaychecks={setShowPaychecks}
+                            />
+                        )}
                     </>
                 )}
             </Box>

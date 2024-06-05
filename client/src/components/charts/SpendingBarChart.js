@@ -1,28 +1,24 @@
-import { useState, useEffect } from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 
 export default function SpendingBarChart(props) {
-    const [dataset, setDataSet] = useState(null);
-
     const valueFormatter = (value) => {
         let str = value < 0 ? "-$" : "$";
         str += `${Math.round(value * 100) / 100}`;
 
         return str;
     };
+
     const chartSetting = {
-        series: [{ dataKey: "amount", label: props.label, valueFormatter }],
         height: 400,
     };
 
-    useEffect(() => {
-        setDataSet(props.data || null);
-    }, [props.data]);
+    console.log(props.data?.dataSet);
+    console.log(props.data?.chartSettings);
 
     return (
-        dataset && (
+        props.data && (
             <BarChart
-                dataset={dataset}
+                dataset={props.data?.dataSet || props.data}
                 xAxis={[
                     {
                         scaleType: "band",
@@ -31,6 +27,15 @@ export default function SpendingBarChart(props) {
                         tickLabelPlacement: "middle",
                     },
                 ]}
+                series={
+                    props.data?.chartSettings || [
+                        {
+                            dataKey: "amount",
+                            valueFormatter,
+                            label: props.label,
+                        },
+                    ]
+                }
                 {...chartSetting}
             />
         )

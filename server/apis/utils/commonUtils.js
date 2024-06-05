@@ -79,7 +79,6 @@ function scAndSSFileNoPrefix(prefix, file) {
 }
 
 function mergeBills(req) {
-    req.params.skipSort = true;
     req.params.type = "utilities";
     const utilities = recurring.getRecurringPayments(req);
 

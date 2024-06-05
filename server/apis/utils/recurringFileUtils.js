@@ -43,10 +43,16 @@ function bankFileAnalysisRecurring(
                 let lineName = splitLine[nameIndex];
                 let name = env.vars[recurType][lineName];
                 let shouldAddPeackock = false;
+                const shouldAddPaycheck =
+                    req.params.showPaychecks &&
+                    _.includes(env.vars.PAYCHECK, lineName);
 
-                const shouldAddName = Boolean(name);
+                const isValidName = Boolean(name);
 
-                if (recurType === "SUBSCRIPTIONS") {
+                if (
+                    recurType === "SUBSCRIPTIONS" &&
+                    !req.params.showPaychecks
+                ) {
                     lineName = lineName.split(" ");
                     if (lineName.length === 3) {
                         const newName = `${lineName.shift()} ${lineName.pop()}`;
@@ -60,7 +66,15 @@ function bankFileAnalysisRecurring(
                     }
                 }
 
-                if (shouldAddDate && (shouldAddName || shouldAddPeackock)) {
+                if (shouldAddPaycheck) {
+                    name = lineName;
+                }
+
+                const shouldAddName = req.params.showPaychecks
+                    ? _.includes(env.vars.PAYCHECK, lineName)
+                    : isValidName || shouldAddPeackock;
+
+                if (shouldAddDate && shouldAddName) {
                     const startOf = moment(date).startOf(of).format("YYYY-MM");
 
                     let total = parseFloat(splitLine[amountIndex]);
