@@ -2,6 +2,7 @@ const _ = require("lodash");
 const moment = require("moment");
 
 const bankFileUtils = require("./bankFileUtils");
+const env = require("../../env");
 
 function ccFileAnalysis(
     file,
@@ -38,7 +39,19 @@ function ccFileAnalysis(
 
                 const shouldAdd = bankFileUtils.shouldPass(req, date, of);
 
-                if (shouldAdd) {
+                const lineName = splitLine[2].split(" ");
+                let isPeacock = false;
+                if (lineName.length === 3) {
+                    const newName = `${lineName.shift()} ${lineName.pop()}`;
+                    console.log(newName);
+                    isPeacock = Boolean(env.vars.SUBSCRIPTIONS[newName]);
+                }
+                const isRecurringPayment =
+                    Boolean(env.vars.UTILITIES[splitLine[2]]) ||
+                    Boolean(env.vars.SUBSCRIPTIONS[splitLine[2]]) ||
+                    isPeacock;
+
+                if (shouldAdd && !isRecurringPayment) {
                     const startOf = moment(date)
                         .startOf(of)
                         .format("YYYY-MM-DD");
@@ -52,6 +65,10 @@ function ccFileAnalysis(
 
                     const index = req.params.insight === "category" ? 3 : 2;
                     const insight = splitLine[index];
+
+                    if (insight === "Bills & Utilities") {
+                        console.log(splitLine);
+                    }
 
                     if (sum.insights[insight] === undefined) {
                         sum.insights[insight] = total;
