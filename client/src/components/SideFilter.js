@@ -80,7 +80,7 @@ export default function SideFilter(props) {
         } else if (props.selectedTab === 2) {
         } else if (props.selectedTab === 3) {
             url += `/recurring/${props.billChartType}`;
-            url += props.billType === "all" ? "" : `/${props.billType}`;
+            url += `/${props.billType}`;
             url += addBillDateToURL();
             url += `/showPaychecks/${showPaychecks}`;
         }

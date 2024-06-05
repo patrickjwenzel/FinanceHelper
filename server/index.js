@@ -67,42 +67,21 @@ app.get("/ccTab/insight/:insight/period/:period/date/:date", (req, res) => {
 
 // ---------- Recurring Payments ----------
 // ---------- Overall ----------
-app.get("/recurring/:chartType/showPaychecks/:showPaychecks", (req, res) => {
-    req.params.period = "monthly";
-    req.params.usePie = req.params.chartType === "pie";
-    req.params.skipSort = true;
-    const showPaychecks = req.params.showPaychecks === "true";
-    req.params.showPaychecks = false;
-
-    const bills = commonUtils.mergeBills(req);
-
-    res.json(recurring.getReturnJson(showPaychecks, req, bills));
-});
-
-app.get(
-    "/recurring/:chartType/date/:date/showPaychecks/:showPaychecks",
-    (req, res) => {
-        req.params.period = "monthly";
-        req.params.usePie = req.params.chartType === "pie";
-        req.params.skipSort = true;
-        const showPaychecks = req.params.showPaychecks === "true";
-        req.params.showPaychecks = false;
-
-        const bills = commonUtils.mergeBills(req);
-
-        res.json(recurring.getReturnJson(showPaychecks, req, bills));
-    }
-);
-
-// ---------- By Type ----------
 app.get(
     "/recurring/:chartType/:type/showPaychecks/:showPaychecks",
     (req, res) => {
         req.params.period = "monthly";
+        req.params.usePie = req.params.chartType === "pie";
         const showPaychecks = req.params.showPaychecks === "true";
         req.params.showPaychecks = false;
+        const tempType = req.params.type;
 
-        const bills = recurring.getRecurringPayments(req);
+        const bills =
+            req.params.type === "all"
+                ? commonUtils.mergeBills(req)
+                : recurring.getRecurringPayments(req);
+
+        req.params.type = tempType;
 
         res.json(recurring.getReturnJson(showPaychecks, req, bills));
     }
@@ -112,14 +91,40 @@ app.get(
     "/recurring/:chartType/:type/date/:date/showPaychecks/:showPaychecks",
     (req, res) => {
         req.params.period = "monthly";
+        req.params.usePie = req.params.chartType === "pie";
         const showPaychecks = req.params.showPaychecks === "true";
         req.params.showPaychecks = false;
+        const tempType = req.params.type;
 
-        const bills = recurring.getRecurringPayments(req);
+        const bills =
+            req.params.type === "all"
+                ? commonUtils.mergeBills(req)
+                : recurring.getRecurringPayments(req);
+
+        req.params.type = tempType;
 
         res.json(recurring.getReturnJson(showPaychecks, req, bills));
     }
 );
+
+// ---------- By Type ----------
+app.get("/recurring/:chartType/:type", (req, res) => {
+    req.params.period = "monthly";
+    req.params.showPaychecks = false;
+
+    const bills = recurring.getRecurringPayments(req);
+
+    res.json(bills);
+});
+
+app.get("/recurring/:chartType/date/:date/:type", (req, res) => {
+    req.params.period = "monthly";
+    req.params.showPaychecks = false;
+
+    const bills = recurring.getRecurringPayments(req);
+
+    res.json(bills);
+});
 
 // Set up listening
 app.listen(PORT, () => {

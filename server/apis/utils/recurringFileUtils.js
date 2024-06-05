@@ -41,7 +41,7 @@ function bankFileAnalysisRecurring(
                 const shouldAddDate = bankFileUtils.shouldPass(req, date, of);
 
                 let lineName = splitLine[nameIndex];
-                let name = env.vars[recurType][lineName];
+                let name = env.vars[recurType]?.[lineName];
                 let shouldAddPeackock = false;
                 const shouldAddPaycheck =
                     req.params.showPaychecks &&

@@ -126,7 +126,11 @@ function getRecurringPayments(req) {
 }
 
 function getReturnJson(showPaychecks, req, bills) {
-    if (showPaychecks && req.params.chartType === "bar") {
+    if (
+        showPaychecks &&
+        req.params.type === "all" &&
+        req.params.chartType === "bar"
+    ) {
         req.params.showPaychecks = true;
 
         let paychecks = getRecurringPayments(req);
@@ -154,7 +158,7 @@ function mergeIncomeAndBills(income, bills) {
         const bill = bills[i];
         chartObj.dataSet.push({
             date: bill.date,
-            billAmount: bill.amount,
+            billAmount: bill.amount * -1,
             incomeAmount: paycheck.amount * -1,
             difference: paycheck.amount * -1 - bill.amount,
         });
