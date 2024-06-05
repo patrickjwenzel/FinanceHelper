@@ -146,7 +146,7 @@ function sortBarChartData(data, req) {
     return tempDataset;
 }
 
-function sortPieChartData(data, req) {
+function sortPieChartData(data) {
     let tempDataset = [];
 
     _.forEach(Object.keys(data.insights), (insight, i) => {

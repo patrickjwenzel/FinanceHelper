@@ -43,7 +43,6 @@ function ccFileAnalysis(
                 let isPeacock = false;
                 if (lineName.length === 3) {
                     const newName = `${lineName.shift()} ${lineName.pop()}`;
-                    console.log(newName);
                     isPeacock = Boolean(env.vars.SUBSCRIPTIONS[newName]);
                 }
                 const isRecurringPayment =
@@ -66,10 +65,6 @@ function ccFileAnalysis(
                     const index = req.params.insight === "category" ? 3 : 2;
                     const insight = splitLine[index];
 
-                    if (insight === "Bills & Utilities") {
-                        console.log(splitLine);
-                    }
-
                     if (sum.insights[insight] === undefined) {
                         sum.insights[insight] = total;
                     } else {
@@ -83,4 +78,17 @@ function ccFileAnalysis(
     return sum;
 }
 
+function findNewName(name) {
+    const stores = env.vars.STORES;
+    for (let i = 0; i < stores.length; i++) {
+        const store = stores[i];
+        if (name.includes(store.toMatch)) {
+            return store.newName;
+        }
+    }
+
+    return name;
+}
+
 module.exports.ccFileAnalysis = ccFileAnalysis;
+module.exports.findNewName = findNewName;
