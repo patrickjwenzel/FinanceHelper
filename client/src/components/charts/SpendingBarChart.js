@@ -4,8 +4,14 @@ import { BarChart } from "@mui/x-charts/BarChart";
 export default function SpendingBarChart(props) {
     const [dataset, setDataSet] = useState(null);
 
+    const valueFormatter = (value) => {
+        let str = value < 0 ? "-$" : "$";
+        str += `${Math.round(value * 100) / 100}`;
+
+        return str;
+    };
     const chartSetting = {
-        series: [{ dataKey: "amount", label: props.label }],
+        series: [{ dataKey: "amount", label: props.label, valueFormatter }],
         height: 400,
     };
 
@@ -23,11 +29,6 @@ export default function SpendingBarChart(props) {
                         dataKey: "date",
                         tickPlacement: "middle",
                         tickLabelPlacement: "middle",
-                    },
-                ]}
-                series={[
-                    {
-                        dataKey: "amount",
                     },
                 ]}
                 {...chartSetting}

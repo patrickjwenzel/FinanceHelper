@@ -2,6 +2,14 @@ import { useEffect } from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 
 export default function SpendingPieChart(props) {
+    const valueFormatter = (item) => {
+        const value = item.value;
+        let str = value < 0 ? "-$" : "$";
+        str += `${Math.round(value * 100) / 100}`;
+
+        return str;
+    };
+
     useEffect(() => {
         if (!props.usePropsData) {
             if (props.data) {
@@ -26,6 +34,7 @@ export default function SpendingPieChart(props) {
                 series={[
                     {
                         data: props.usePropsData ? props.data : props.dataset,
+                        valueFormatter,
                     },
                 ]}
                 sx={{
