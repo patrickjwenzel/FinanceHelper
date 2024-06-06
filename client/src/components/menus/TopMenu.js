@@ -2,7 +2,7 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import * as MUIIcons from "@mui/icons-material";
 
-import MainBody from "./MainBody";
+import MainBody from "../MainBody";
 import TabMenu from "./TabMenu";
 
 export default function TopMenu() {
@@ -14,8 +14,8 @@ export default function TopMenu() {
             label: "Analysis",
         },
         {
-            icon: <MUIIcons.CreditCard />,
-            label: process.env.REACT_APP_CC_NAME,
+            icon: <MUIIcons.ShoppingCartCheckout />,
+            label: process.env.REACT_APP_SPENDING_NAME,
         },
         {
             icon: <MUIIcons.AccountBalance />,
