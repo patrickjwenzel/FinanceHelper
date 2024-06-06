@@ -2,29 +2,14 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import * as MUIIcons from "@mui/icons-material";
 import Pagination from "@mui/material/Pagination";
-import moment from "moment";
 
 import TabMenu from "../TabMenu";
 import SpendingBarChart from "../charts/SpendingBarChart";
 import SpendingPieChart from "../charts/SpendingPieChart";
-import Heading from "../Heading";
 
 export default function CCTab(props) {
     const [dataset, setDataset] = useState(null);
     const [page, setPage] = useState(1);
-
-    const getHeading = () => {
-        const date = props.selectedCCDate || moment();
-        let str = "Spending by ";
-        str += `${props.selectedInsight === 1 ? "category" : "place"} `;
-        str += `in the ${
-            props.period === "monthly"
-                ? `month of ${moment(date).format("MMMM YYYY")}`
-                : `week of ${moment(date).format("MMMM Do YYYY")}`
-        }`;
-
-        return str;
-    };
 
     const tabs = [
         {
@@ -77,7 +62,6 @@ export default function CCTab(props) {
             )}
             {props.selectedInsight === 2 && (
                 <>
-                    <Heading heading={getHeading()} />
                     {props.pageCount && (
                         <div
                             style={{
