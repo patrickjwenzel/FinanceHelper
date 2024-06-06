@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import SpendingBarChart from "../charts/SpendingBarChart";
-import CCTab from "./CCTab";
+import SpendingTab from "./SpendingTab";
 import RecurringTab from "./RecurringTab";
 
 export default function ChartTab(props) {
@@ -18,11 +18,11 @@ export default function ChartTab(props) {
                 <SpendingBarChart data={props.data} label="Cash Flow ($)" />
             )}
             {props.selectedTab === 1 && (
-                <CCTab
+                <SpendingTab
                     selectedInsight={props.selectedInsight}
                     setSelectedInsight={props.setSelectedInsight}
-                    selectedCCDate={props.selectedCCDate}
-                    setSelectedCCDate={props.setSelectedCCDate}
+                    selectedSpendingDate={props.selectedSpendingDate}
+                    setSelectedSpendingDate={props.setSelectedSpendingDate}
                     data={props.data}
                     period={props.period}
                     pageCount={props.pageCount}

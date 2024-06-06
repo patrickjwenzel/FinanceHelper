@@ -12,7 +12,7 @@ export default function MainBody(props) {
     const [data, setData] = useState(null);
     const [period, setPeriod] = useState("monthly");
     const [selectedInsight, setSelectedInsight] = useState(0);
-    const [selectedCCDate, setSelectedCCDate] = useState(null);
+    const [selectedSpendingDate, setSelectedSpendingDate] = useState(null);
     const [pageCount, setPageCount] = useState(1);
     const [billType, setBillType] = useState("all");
     const [billChartType, setBillChartType] = useState("bar");
@@ -27,8 +27,8 @@ export default function MainBody(props) {
                         setData={setData}
                         period={period}
                         setPeriod={setPeriod}
-                        selectedCCDate={selectedCCDate}
-                        setSelectedCCDate={setSelectedCCDate}
+                        selectedSpendingDate={selectedSpendingDate}
+                        setSelectedSpendingDate={setSelectedSpendingDate}
                         selectedInsight={selectedInsight}
                         setPageCount={setPageCount}
                         billType={billType}
@@ -47,7 +47,7 @@ export default function MainBody(props) {
                         setPeriod={setPeriod}
                         selectedInsight={selectedInsight}
                         setSelectedInsight={setSelectedInsight}
-                        selectedCCDate={selectedCCDate}
+                        selectedSpendingDate={selectedSpendingDate}
                         pageCount={pageCount}
                         billType={billType}
                         setBillType={setBillType}

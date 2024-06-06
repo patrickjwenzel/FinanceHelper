@@ -43,7 +43,7 @@ export default function SideFilter(props) {
         return (
             `/insight/${selectedInsight === 1 ? "category" : "place"}` +
             `/period/${props.period}/date/${moment(
-                props.selectedCCDate || today
+                props.selectedSpendingDate || today
             ).format("YYYY-MM-DD")}`
         );
     };
@@ -69,7 +69,7 @@ export default function SideFilter(props) {
             url = addTabToURL("analysis");
             url += addDatesToURL(url);
         } else if (props.selectedTab === 1) {
-            url += "ccTab";
+            url += "spendingTab";
 
             if (props.selectedInsight === 0) {
                 url += addTabToURL("overall");
@@ -109,7 +109,7 @@ export default function SideFilter(props) {
         props.period,
         props.selectedTab,
         props.selectedInsight,
-        props.selectedCCDate,
+        props.selectedSpendingDate,
         props.billType,
         props.billChartType,
         props.selectedBillDate,
@@ -136,12 +136,12 @@ export default function SideFilter(props) {
                     )}
                     {props.selectedTab === 1 && props.selectedInsight !== 0 && (
                         <CustomDatePicker
-                            id="min-cc-date"
+                            id="min-spending-date"
                             label="Min Date"
                             minDate={MINIMUM_DATE}
-                            value={props.selectedCCDate}
+                            value={props.selectedSpendingDate}
                             onChange={(value) => {
-                                props.setSelectedCCDate(
+                                props.setSelectedSpendingDate(
                                     value ? moment(value) : null
                                 );
                             }}

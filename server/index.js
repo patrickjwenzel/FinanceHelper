@@ -5,7 +5,7 @@ const _ = require("lodash");
 
 // File imports
 const analyze = require("./apis/analyze");
-const ccTab = require("./apis/ccTab");
+const spendingTab = require("./apis/spendingTab");
 const recurring = require("./apis/recurring");
 const commonUtils = require("./apis/utils/commonUtils");
 
@@ -39,31 +39,34 @@ app.get("/analysis/:period/min/:min/max/:max", (req, res) => {
 
 // ---------- CC Tab ----------
 // ---------- Overall ----------
-app.get("/ccTab/overall/:period", (req, res) => {
-    const totals = ccTab.getCCOverallPurchases(req);
+app.get("/spendingTab/overall/:period", (req, res) => {
+    const totals = spendingTab.getCCOverallPurchases(req);
     res.json(totals);
 });
 
-app.get("/ccTab/overall/:period/min/:min", (req, res) => {
-    const totals = ccTab.getCCOverallPurchases(req);
+app.get("/spendingTab/overall/:period/min/:min", (req, res) => {
+    const totals = spendingTab.getCCOverallPurchases(req);
     res.json(totals);
 });
 
-app.get("/ccTab/overall/:period/max/:max", (req, res) => {
-    const totals = ccTab.getCCOverallPurchases(req);
+app.get("/spendingTab/overall/:period/max/:max", (req, res) => {
+    const totals = spendingTab.getCCOverallPurchases(req);
     res.json(totals);
 });
 
-app.get("/ccTab/overall/:period/min/:min/max/:max", (req, res) => {
-    const totals = ccTab.getCCOverallPurchases(req);
+app.get("/spendingTab/overall/:period/min/:min/max/:max", (req, res) => {
+    const totals = spendingTab.getCCOverallPurchases(req);
     res.json(totals);
 });
 
 // ---------- Insights ----------
-app.get("/ccTab/insight/:insight/period/:period/date/:date", (req, res) => {
-    const totals = ccTab.getCCInsightPurchases(req);
-    res.json(totals);
-});
+app.get(
+    "/spendingTab/insight/:insight/period/:period/date/:date",
+    (req, res) => {
+        const totals = spendingTab.getCCInsightPurchases(req);
+        res.json(totals);
+    }
+);
 
 // ---------- Recurring Payments ----------
 // ---------- Overall ----------

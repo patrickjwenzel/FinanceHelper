@@ -3,11 +3,11 @@ import Box from "@mui/material/Box";
 import * as MUIIcons from "@mui/icons-material";
 import Pagination from "@mui/material/Pagination";
 
-import TabMenu from "../TabMenu";
+import TabMenu from "../menus/TabMenu";
 import SpendingBarChart from "../charts/SpendingBarChart";
 import SpendingPieChart from "../charts/SpendingPieChart";
 
-export default function CCTab(props) {
+export default function SpendingTab(props) {
     const [dataset, setDataset] = useState(null);
     const [page, setPage] = useState(1);
 
@@ -48,7 +48,7 @@ export default function CCTab(props) {
             {props.selectedInsight === 0 && (
                 <SpendingBarChart
                     data={props.data}
-                    label={`${process.env.REACT_APP_CC_NAME} Spending`}
+                    label={`${process.env.REACT_APP_SPENDING_NAME} Spending`}
                 />
             )}
             {props.selectedInsight === 1 && (
