@@ -37,10 +37,14 @@ function bankFileAnalysis(
                 if (isMonthly) {
                     sum.total += total;
                 } else {
-                    let date = splitLine[dateIndex].split("/");
-                    date = `${date[2]}-${date[0]}-${date[1]}`;
+                    let date = splitLine[dateIndex];
 
-                    date = shouldSplit ? date : splitLine[dateIndex];
+                    if (shouldSplit) {
+                        date = date.split("/");
+                        date =
+                            `${date[2]}-${padNumber(date[0])}` +
+                            `-${padNumber(date[1])}`;
+                    }
 
                     const shouldAdd = shouldPass(req, date, "week");
 
@@ -74,6 +78,12 @@ function bankFileAnalysis(
             return arr;
         }
     }
+}
+
+function padNumber(num) {
+    let newNum = Number(num);
+
+    return `${newNum < 10 && num.length === 1 ? "0" : ""}${num}`;
 }
 
 function shouldPass(req, toCompare, of) {
