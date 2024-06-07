@@ -12,9 +12,6 @@ export default function SpendingBarChart(props) {
         height: 400,
     };
 
-    console.log(props.data?.dataSet);
-    console.log(props.data?.chartSettings);
-
     return (
         props.data && (
             <BarChart
