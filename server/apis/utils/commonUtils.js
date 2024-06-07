@@ -138,11 +138,11 @@ function sortBarChartData(data, req) {
             if (datej.diff(datemin) < 0) {
                 m = j;
             }
-
-            let temp = tempDataset[m];
-            tempDataset[m] = tempDataset[i];
-            tempDataset[i] = temp;
         }
+
+        const temp = tempDataset[m];
+        tempDataset[m] = tempDataset[i];
+        tempDataset[i] = temp;
     }
     return tempDataset;
 }
@@ -165,11 +165,11 @@ function sortPieChartData(data) {
             if (tempDataset[j].value >= tempDataset[m].value) {
                 m = j;
             }
-
-            let temp = tempDataset[m];
-            tempDataset[m] = tempDataset[i];
-            tempDataset[i] = temp;
         }
+
+        let temp = tempDataset[m];
+        tempDataset[m] = tempDataset[i];
+        tempDataset[i] = temp;
     }
 
     return tempDataset;
