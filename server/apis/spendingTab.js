@@ -45,6 +45,10 @@ function getCCInsightPurchases(req) {
         }
     });
 
+    if (!tempObj) {
+        return null;
+    }
+
     retObj.chartData = commonUtils.sortPieChartData(tempObj);
 
     return retObj;
