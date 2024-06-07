@@ -1,9 +1,10 @@
 const fs = require("fs");
 const _ = require("lodash");
 const path = require("path");
+const moment = require("moment");
+
 const env = require("../../env");
 const recurring = require("../recurring");
-const moment = require("moment");
 
 function iterateFilesInFolder(
     files,
@@ -106,26 +107,24 @@ function mergeBills(req) {
 }
 
 function sortBarChartData(data, req) {
-    const createDate = (d) => {
-        let date = d;
-        date = d.split("/");
-        date = `${date[1]}-${date[0]}-01`;
-        return date;
-    };
-
     let tempDataset = [];
 
-    _.forEach(Object.keys(data), (key) => {
-        tempDataset.push({
-            amount: data[key],
-            date: key,
+    if (Array.isArray(data)) {
+        tempDataset = data;
+    } else {
+        _.forEach(Object.keys(data), (key) => {
+            tempDataset.push({
+                amount: data[key],
+                date: key,
+            });
         });
-    });
+    }
 
+    const length = tempDataset.length;
     let i, j, m;
-    for (i = 0; i < tempDataset.length - 1; i++) {
+    for (i = 0; i < length - 1; i++) {
         m = i;
-        for (j = i + 1; j < tempDataset.length; j++) {
+        for (j = i + 1; j < length; j++) {
             const datej =
                 req.params.period === "monthly"
                     ? moment(createDate(tempDataset[j].date))
@@ -145,6 +144,13 @@ function sortBarChartData(data, req) {
         tempDataset[i] = temp;
     }
     return tempDataset;
+}
+
+function createDate(d) {
+    let date = d;
+    date = d.split("/");
+    date = `${date[1]}-${date[0]}-01`;
+    return date;
 }
 
 function sortPieChartData(data) {
@@ -182,3 +188,4 @@ module.exports.scAndSSFileNoPrefix = scAndSSFileNoPrefix;
 module.exports.mergeBills = mergeBills;
 module.exports.sortBarChartData = sortBarChartData;
 module.exports.sortPieChartData = sortPieChartData;
+module.exports.createDate = createDate;

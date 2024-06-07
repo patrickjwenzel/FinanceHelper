@@ -7,6 +7,7 @@ const _ = require("lodash");
 const analyze = require("./apis/analyze");
 const spendingTab = require("./apis/spendingTab");
 const recurring = require("./apis/recurring");
+const bank = require("./apis/bank");
 const commonUtils = require("./apis/utils/commonUtils");
 
 // App setup
@@ -127,6 +128,27 @@ app.get("/recurring/:chartType/date/:date/:type", (req, res) => {
     const bills = recurring.getRecurringPayments(req);
 
     res.json(bills);
+});
+
+// ---------- Bank Tab ----------
+app.get("/bank/:period", (req, res) => {
+    const totals = bank.getBankBalances(req);
+    res.json(totals);
+});
+
+app.get("/bank/:period/min/:min", (req, res) => {
+    const totals = bank.getBankBalances(req);
+    res.json(totals);
+});
+
+app.get("/bank/:period/max/:max", (req, res) => {
+    const totals = bank.getBankBalances(req);
+    res.json(totals);
+});
+
+app.get("/bank/:period/min/:min/max/:max", (req, res) => {
+    const totals = bank.getBankBalances(req);
+    res.json(totals);
 });
 
 // Set up listening

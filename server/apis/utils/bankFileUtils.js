@@ -16,6 +16,7 @@ function bankFileAnalysis(
     const sum = {};
     const isMonthly = req.params.period === "monthly";
     const shouldIterate = shouldPass(req, fileNoPrefix, "month");
+    const gettingBalances = _.isEmpty(excludes);
 
     if (isMonthly) {
         sum.date = moment(fileNoPrefix).format("MM/YYYY");
@@ -27,15 +28,30 @@ function bankFileAnalysis(
         splitLines.shift();
         splitLines.pop();
 
-        _.forEach(splitLines, (line) => {
+        const linesToIterate = gettingBalances
+            ? splitLines.reverse()
+            : splitLines;
+
+        _.forEach(linesToIterate, (line) => {
             const splitLine = line.split(",");
             if (shouldBeIncluded(splitLine, excludes, amountIndex)) {
                 let total = parseFloat(splitLine[amountIndex]);
                 total = Boolean(total)
                     ? total
                     : parseFloat(splitLine[amountIndex + 1]);
+
+                if (gettingBalances) {
+                    total = Boolean(parseFloat(splitLine[amountIndex - 1]))
+                        ? total
+                        : parseFloat(splitLine[amountIndex + 1]);
+                }
+
                 if (isMonthly) {
-                    sum.total += total;
+                    if (gettingBalances) {
+                        sum.total = total;
+                    } else {
+                        sum.total += total;
+                    }
                 } else {
                     let date = splitLine[dateIndex];
 
@@ -46,16 +62,16 @@ function bankFileAnalysis(
                             `-${padNumber(date[1])}`;
                     }
 
-                    const shouldAdd = shouldPass(req, date, "week");
+                    const of = req.params.period === "weekly" ? "week" : "day";
+
+                    const shouldAdd = shouldPass(req, date, of);
 
                     if (shouldAdd) {
-                        const week = moment(date)
-                            .startOf("week")
-                            .format("YYYY-MM-DD");
-                        if (sum[week]) {
-                            sum[week] += total;
+                        date = moment(date).startOf(of).format("YYYY-MM-DD");
+                        if (sum[date] && !gettingBalances) {
+                            sum[date] += total;
                         } else {
-                            sum[week] = total;
+                            sum[date] = total;
                         }
                     }
                 }
@@ -69,10 +85,15 @@ function bankFileAnalysis(
         } else {
             const arr = [];
             _.forEach(Object.keys(sum), (key) => {
-                arr.push({
-                    date: key,
-                    total: sum[key],
-                });
+                const d1 = moment(fileNoPrefix);
+                const d2 = moment(key);
+
+                if (d2.diff(d1) >= 0) {
+                    arr.push({
+                        date: key,
+                        total: sum[key],
+                    });
+                }
             });
 
             return arr;
@@ -92,6 +113,7 @@ function shouldPass(req, toCompare, of) {
     req.params.min = req.params.date
         ? moment(req.params.date).startOf(of)
         : req.params.min;
+
     req.params.max = req.params.date
         ? moment(req.params.date).endOf(of)
         : req.params.max;
