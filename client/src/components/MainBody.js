@@ -5,12 +5,7 @@ import Grid from "@mui/material/Grid";
 import ChartTab from "./tabs/ChartTab";
 import SideFilter from "./SideFilter";
 
-const _ = require("lodash");
-
 export default function MainBody(props) {
-    const { selectedTab } = props;
-    const [data, setData] = useState(null);
-    const [period, setPeriod] = useState("monthly");
     const [selectedInsight, setSelectedInsight] = useState(0);
     const [selectedSpendingDate, setSelectedSpendingDate] = useState(null);
     const [pageCount, setPageCount] = useState(1);
@@ -23,10 +18,10 @@ export default function MainBody(props) {
             <Grid container spacing={3}>
                 <Grid item xs>
                     <SideFilter
-                        selectedTab={selectedTab}
-                        setData={setData}
-                        period={period}
-                        setPeriod={setPeriod}
+                        selectedTab={props.selectedTab}
+                        setData={props.setData}
+                        period={props.period}
+                        setPeriod={props.setPeriod}
                         selectedSpendingDate={selectedSpendingDate}
                         setSelectedSpendingDate={setSelectedSpendingDate}
                         selectedInsight={selectedInsight}
@@ -41,10 +36,10 @@ export default function MainBody(props) {
                 </Grid>
                 <Grid item xs={8}>
                     <ChartTab
-                        data={data}
-                        selectedTab={selectedTab}
-                        period={period}
-                        setPeriod={setPeriod}
+                        data={props.data}
+                        selectedTab={props.selectedTab}
+                        period={props.period}
+                        setPeriod={props.setPeriod}
                         selectedInsight={selectedInsight}
                         setSelectedInsight={setSelectedInsight}
                         selectedSpendingDate={selectedSpendingDate}

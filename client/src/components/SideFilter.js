@@ -78,6 +78,8 @@ export default function SideFilter(props) {
                 url += addInsightToURL(props.selectedInsight);
             }
         } else if (props.selectedTab === 2) {
+            url = addTabToURL("bank");
+            url += addDatesToURL(url);
         } else if (props.selectedTab === 3) {
             url += `/recurring/${props.billChartType}`;
             url += `/${props.billType}`;
@@ -128,10 +130,18 @@ export default function SideFilter(props) {
                 <Grid container spacing={1}>
                     {(props.selectedTab === 0 ||
                         (props.selectedTab === 1 &&
-                            props.selectedInsight === 0)) && (
+                            props.selectedInsight === 0) ||
+                        props.selectedTab === 2) && (
                         <DateRange
                             selectedDates={selectedDates}
                             setSelectedDates={setSelectedDates}
+                            selectedTab={props.selectedTab}
+                            views={["month", "year"].concat(
+                                props.selectedTab === 2 &&
+                                    props.period === "daily"
+                                    ? ["day"]
+                                    : []
+                            )}
                         />
                     )}
                     {props.selectedTab === 1 && props.selectedInsight !== 0 && (
@@ -155,6 +165,7 @@ export default function SideFilter(props) {
                     <PeriodSelector
                         period={props.period}
                         setPeriod={props.setPeriod}
+                        includeDays={props.selectedTab === 2}
                     />
                 )}
                 {props.selectedTab === 3 && (

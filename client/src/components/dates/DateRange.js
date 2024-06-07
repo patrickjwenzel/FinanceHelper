@@ -42,7 +42,7 @@ export default function DateRange(props) {
                     onChange={(value) => {
                         updateDates("min", value);
                     }}
-                    views={["month", "year"]}
+                    views={props.views}
                 />
             </Grid>
             <Grid item xs={6}>
@@ -54,7 +54,7 @@ export default function DateRange(props) {
                     onChange={(value) => {
                         updateDates("max", value);
                     }}
-                    views={["month", "year"]}
+                    views={props.views}
                 />
             </Grid>
         </>

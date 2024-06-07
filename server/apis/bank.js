@@ -85,7 +85,6 @@ function getBankBalances(req) {
                     scBalances,
                     (balance) => Math.round(balance.total * 100) / 100
                 ),
-                stack: true,
             },
             {
                 id: "Savings",
@@ -94,7 +93,6 @@ function getBankBalances(req) {
                     ssBalances,
                     (balance) => Math.round(balance.total * 100) / 100
                 ),
-                stack: true,
             },
             {
                 id: "Total",
@@ -103,12 +101,9 @@ function getBankBalances(req) {
                     totalBalances,
                     (balance) => Math.round(balance.total * 100) / 100
                 ),
-                stack: true,
             },
         ],
     };
-
-    console.log(chartInfo);
 
     return chartInfo;
 }

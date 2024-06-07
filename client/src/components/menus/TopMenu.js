@@ -7,6 +7,8 @@ import TabMenu from "./TabMenu";
 
 export default function TopMenu() {
     const [selectedTab, setSelectedTab] = useState(0);
+    const [period, setPeriod] = useState("monthly");
+    const [data, setData] = useState(null);
 
     const tabs = [
         {
@@ -28,7 +30,9 @@ export default function TopMenu() {
     ];
 
     const handleChange = (event, newTab) => {
+        setData(null);
         setSelectedTab(newTab);
+        setPeriod("monthly");
     };
 
     return (
@@ -44,7 +48,13 @@ export default function TopMenu() {
                 handleChange={handleChange}
                 centered
             />
-            <MainBody selectedTab={selectedTab} />
+            <MainBody
+                selectedTab={selectedTab}
+                period={period}
+                setPeriod={setPeriod}
+                data={data}
+                setData={setData}
+            />
         </Box>
     );
 }
