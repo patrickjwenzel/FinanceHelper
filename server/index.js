@@ -72,12 +72,15 @@ app.get(
 // ---------- Recurring Payments ----------
 // ---------- Overall ----------
 app.get(
-    "/recurring/:chartType/:type/showPaychecks/:showPaychecks",
+    "/recurring/:chartType/:type/showPaychecks/:showPaychecks/includeSecondary/:includeSecondary",
     (req, res) => {
         req.params.period = "monthly";
         req.params.usePie = req.params.chartType === "pie";
+        req.params.includeSecondary = req.params.includeSecondary === "true";
+
         const showPaychecks = req.params.showPaychecks === "true";
         req.params.showPaychecks = false;
+
         const tempType = req.params.type;
 
         const bills =
@@ -92,12 +95,15 @@ app.get(
 );
 
 app.get(
-    "/recurring/:chartType/:type/date/:date/showPaychecks/:showPaychecks",
+    "/recurring/:chartType/:type/date/:date/showPaychecks/:showPaychecks/includeSecondary/:includeSecondary",
     (req, res) => {
         req.params.period = "monthly";
         req.params.usePie = req.params.chartType === "pie";
+        req.params.includeSecondary = req.params.includeSecondary === "true";
+
         const showPaychecks = req.params.showPaychecks === "true";
         req.params.showPaychecks = false;
+
         const tempType = req.params.type;
 
         const bills =
@@ -112,23 +118,31 @@ app.get(
 );
 
 // ---------- By Type ----------
-app.get("/recurring/:chartType/:type", (req, res) => {
-    req.params.period = "monthly";
-    req.params.showPaychecks = false;
+app.get(
+    "/recurring/:chartType/:type/showPaychecks/:showPaychecks/includeSecondary/:includeSecondary",
+    (req, res) => {
+        req.params.period = "monthly";
+        req.params.showPaychecks = false;
+        req.params.includeSecondary = req.params.includeSecondary === "true";
 
-    const bills = recurring.getRecurringPayments(req);
+        const bills = recurring.getRecurringPayments(req);
 
-    res.json(bills);
-});
+        res.json(bills);
+    }
+);
 
-app.get("/recurring/:chartType/date/:date/:type", (req, res) => {
-    req.params.period = "monthly";
-    req.params.showPaychecks = false;
+app.get(
+    "/recurring/:chartType/date/:date/:type/showPaychecks/:showPaychecks/includeSecondary/:includeSecondary",
+    (req, res) => {
+        req.params.period = "monthly";
+        req.params.showPaychecks = false;
+        req.params.includeSecondary = req.params.includeSecondary === "true";
 
-    const bills = recurring.getRecurringPayments(req);
+        const bills = recurring.getRecurringPayments(req);
 
-    res.json(bills);
-});
+        res.json(bills);
+    }
+);
 
 // ---------- Bank Tab ----------
 app.get("/bank/:period", (req, res) => {

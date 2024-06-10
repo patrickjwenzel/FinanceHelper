@@ -9,7 +9,7 @@ import DateRange from "./dates/DateRange";
 import CustomDatePicker from "./dates/CustomDatePicker";
 import BillTypeSelector from "./selectors/BillTypeSelector";
 import BillChartTypeSelector from "./selectors/BillChartTypeSelector";
-import PaycheckOnSwitch from "./selectors/PaycheckOnSwitch";
+import PaycheckSelectors from "./selectors/PaycheckSelectors";
 
 const today = moment();
 const MINIMUM_DATE = moment("01/01/2024");
@@ -20,6 +20,7 @@ export default function SideFilter(props) {
         max: null,
     });
     const [showPaychecks, setShowPaychecks] = useState(false);
+    const [includeSecondary, setIncludeSecondary] = useState(false);
 
     const addTabToURL = (tab) => {
         let url = `/${tab}/${props.period}`;
@@ -85,6 +86,7 @@ export default function SideFilter(props) {
             url += `/${props.billType}`;
             url += addBillDateToURL();
             url += `/showPaychecks/${showPaychecks}`;
+            url += `/includeSecondary/${includeSecondary}`;
         }
 
         if (url) {
@@ -116,6 +118,7 @@ export default function SideFilter(props) {
         props.billChartType,
         props.selectedBillDate,
         showPaychecks,
+        includeSecondary,
     ]);
 
     return (
@@ -191,12 +194,15 @@ export default function SideFilter(props) {
                             setBillChartType={props.setBillChartType}
                             setData={props.setData}
                         />
-                        {props.billChartType === "bar" && (
-                            <PaycheckOnSwitch
-                                showPaychecks={showPaychecks}
-                                setShowPaychecks={setShowPaychecks}
-                            />
-                        )}
+                        {props.billChartType === "bar" &&
+                            props.billType === "all" && (
+                                <PaycheckSelectors
+                                    showPaychecks={showPaychecks}
+                                    setShowPaychecks={setShowPaychecks}
+                                    includeSecondary={includeSecondary}
+                                    setIncludeSecondary={setIncludeSecondary}
+                                />
+                            )}
                     </>
                 )}
             </Box>

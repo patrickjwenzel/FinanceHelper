@@ -70,9 +70,16 @@ function bankFileAnalysisRecurring(
                     name = lineName;
                 }
 
-                const shouldAddName = req.params.showPaychecks
-                    ? _.includes(env.vars.PAYCHECK, lineName)
-                    : isValidName || shouldAddPeackock;
+                let shouldAddName = false;
+
+                if (req.params.showPaychecks) {
+                    shouldAddName =
+                        isValidPaycheck("primary", lineName) ||
+                        (req.params.includeSecondary &&
+                            isValidPaycheck("secondary", lineName));
+                } else {
+                    shouldAddName = isValidName || shouldAddPeackock;
+                }
 
                 if (shouldAddDate && shouldAddName) {
                     const startOf = moment(date).startOf(of).format("YYYY-MM");
@@ -95,6 +102,10 @@ function bankFileAnalysisRecurring(
     }
 
     return sum;
+}
+
+function isValidPaycheck(type, lineName) {
+    return _.includes(env.vars.PAYCHECKS[type], lineName);
 }
 
 module.exports.bankFileAnalysisRecurring = bankFileAnalysisRecurring;
