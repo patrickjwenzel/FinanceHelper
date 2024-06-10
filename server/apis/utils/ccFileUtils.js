@@ -32,11 +32,11 @@ function ccFileAnalysis(
             if (
                 bankFileUtils.shouldBeIncluded(splitLine, excludes, amountIndex)
             ) {
-                let date = splitLine[dateIndex].split("/");
-                date = `${date[2]}-${date[0]}-${date[1]}`;
-
-                date = shouldSplit ? date : splitLine[dateIndex];
-
+                const date = commonUtils.getDate(
+                    splitLine,
+                    dateIndex,
+                    shouldSplit
+                );
                 const shouldAdd = bankFileUtils.shouldPass(req, date, of);
 
                 const lineName = splitLine[2].split(" ");

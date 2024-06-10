@@ -2,6 +2,7 @@ const _ = require("lodash");
 const moment = require("moment");
 
 const bankFileUtils = require("./bankFileUtils");
+const commonUtils = require("./commonUtils");
 const env = require("../../env");
 
 function bankFileAnalysisRecurring(
@@ -33,11 +34,11 @@ function bankFileAnalysisRecurring(
             if (
                 bankFileUtils.shouldBeIncluded(splitLine, excludes, amountIndex)
             ) {
-                let date = splitLine[dateIndex].split("/");
-                date = `${date[2]}-${date[0]}-${date[1]}`;
-
-                date = shouldSplit ? date : splitLine[dateIndex];
-
+                const date = commonUtils.getDate(
+                    splitLine,
+                    dateIndex,
+                    shouldSplit
+                );
                 const shouldAddDate = bankFileUtils.shouldPass(req, date, of);
 
                 let lineName = splitLine[nameIndex];

@@ -181,6 +181,25 @@ function sortPieChartData(data) {
     return tempDataset;
 }
 
+function getDate(splitLine, dateIndex, shouldSplit) {
+    let newDate = splitLine[dateIndex];
+
+    if (shouldSplit) {
+        newDate = newDate.split("/");
+        newDate =
+            `${newDate[2]}-${padNumber(newDate[0])}` +
+            `-${padNumber(newDate[1])}`;
+    }
+
+    return newDate;
+}
+
+function padNumber(num) {
+    let newNum = Number(num);
+
+    return `${newNum < 10 && num.length === 1 ? "0" : ""}${num}`;
+}
+
 module.exports.iterateFilesInFolder = iterateFilesInFolder;
 module.exports.ccFileNoPrefix = ccFileNoPrefix;
 module.exports.iterateBankFolder = iterateBankFolder;
@@ -189,3 +208,4 @@ module.exports.mergeBills = mergeBills;
 module.exports.sortBarChartData = sortBarChartData;
 module.exports.sortPieChartData = sortPieChartData;
 module.exports.createDate = createDate;
+module.exports.getDate = getDate;

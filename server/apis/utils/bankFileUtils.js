@@ -53,15 +53,11 @@ function bankFileAnalysis(
                         sum.total += total;
                     }
                 } else {
-                    let date = splitLine[dateIndex];
-
-                    if (shouldSplit) {
-                        date = date.split("/");
-                        date =
-                            `${date[2]}-${padNumber(date[0])}` +
-                            `-${padNumber(date[1])}`;
-                    }
-
+                    const date = commonUtils.getDate(
+                        splitLine,
+                        dateIndex,
+                        shouldSplit
+                    );
                     const of = req.params.period === "weekly" ? "week" : "day";
 
                     const shouldAdd = shouldPass(req, date, of);
