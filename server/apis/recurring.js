@@ -126,6 +126,10 @@ function getRecurringPayments(req) {
 }
 
 function getReturnJson(showPaychecks, req, bills) {
+    let ret;
+    let billAvg;
+    let incomeAvg;
+
     if (
         showPaychecks &&
         req.params.type === "all" &&
@@ -138,10 +142,33 @@ function getReturnJson(showPaychecks, req, bills) {
 
         const incomeAndBills = mergeIncomeAndBills(paychecks, bills);
 
-        return incomeAndBills;
+        ret = incomeAndBills;
+
+        const numDates = incomeAndBills.dataSet.length;
+
+        billAvg = getAvg(incomeAndBills.dataSet, "billAmount", numDates) * -1;
+        incomeAvg = getAvg(incomeAndBills.dataSet, "incomeAmount", numDates);
     } else {
-        return bills;
+        billAvg =
+            req.params.chartType === "bar"
+                ? getAvg(bills, "amount", bills.length)
+                : _.sumBy(bills, "value");
+        ret = {
+            dataSet: bills,
+        };
     }
+
+    ret.avgs = {
+        billAvg: billAvg,
+        incomeAvg: incomeAvg,
+        diffAvg: incomeAvg - billAvg,
+    };
+
+    return ret;
+}
+
+function getAvg(dataset, it, numDates) {
+    return _.sumBy(dataset, it) / numDates;
 }
 
 function mergeIncomeAndBills(income, bills) {

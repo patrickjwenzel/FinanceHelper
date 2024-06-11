@@ -35,6 +35,8 @@ export default function ChartTab(props) {
                 <RecurringTab
                     data={props.data}
                     billChartType={props.billChartType}
+                    showPaychecks={props.showPaychecks}
+                    billType={props.billType}
                 />
             )}
         </Box>

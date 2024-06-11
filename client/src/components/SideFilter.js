@@ -19,7 +19,6 @@ export default function SideFilter(props) {
         min: null,
         max: null,
     });
-    const [showPaychecks, setShowPaychecks] = useState(false);
     const [includeSecondary, setIncludeSecondary] = useState(false);
 
     const addTabToURL = (tab) => {
@@ -85,7 +84,7 @@ export default function SideFilter(props) {
             url += `/recurring/${props.billChartType}`;
             url += `/${props.billType}`;
             url += addBillDateToURL();
-            url += `/showPaychecks/${showPaychecks}`;
+            url += `/showPaychecks/${props.showPaychecks}`;
             url += `/includeSecondary/${includeSecondary}`;
         }
 
@@ -117,7 +116,7 @@ export default function SideFilter(props) {
         props.billType,
         props.billChartType,
         props.selectedBillDate,
-        showPaychecks,
+        props.showPaychecks,
         includeSecondary,
     ]);
 
@@ -197,8 +196,8 @@ export default function SideFilter(props) {
                         {props.billChartType === "bar" &&
                             props.billType === "all" && (
                                 <PaycheckSelectors
-                                    showPaychecks={showPaychecks}
-                                    setShowPaychecks={setShowPaychecks}
+                                    showPaychecks={props.showPaychecks}
+                                    setShowPaychecks={props.setShowPaychecks}
                                     includeSecondary={includeSecondary}
                                     setIncludeSecondary={setIncludeSecondary}
                                 />

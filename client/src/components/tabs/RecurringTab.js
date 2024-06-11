@@ -1,8 +1,8 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
 
 import SpendingBarChart from "../charts/SpendingBarChart";
 import SpendingPieChart from "../charts/SpendingPieChart";
+import MoneyGrid from "../boxGrid/MoneyGrid";
 
 export default function RecurringTab(props) {
     const getChartLabel = () => {
@@ -24,6 +24,12 @@ export default function RecurringTab(props) {
                 width: "100%",
             }}
         >
+            <MoneyGrid
+                data={props.data}
+                showPaychecks={props.showPaychecks}
+                billChartType={props.billChartType}
+                billType={props.billType}
+            />
             {props.billChartType === "bar" && (
                 <SpendingBarChart data={props.data} label={getChartLabel()} />
             )}

@@ -1,7 +1,6 @@
 // Package imports
 const express = require("express");
 const bodyParser = require("body-parser");
-const _ = require("lodash");
 
 // File imports
 const analyze = require("./apis/analyze");

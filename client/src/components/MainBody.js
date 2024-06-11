@@ -12,6 +12,7 @@ export default function MainBody(props) {
     const [billType, setBillType] = useState("all");
     const [billChartType, setBillChartType] = useState("bar");
     const [selectedBillDate, setSelectedBillDate] = useState(null);
+    const [showPaychecks, setShowPaychecks] = useState(false);
 
     return (
         <Box sx={{ flexGrow: 1, marginX: 3 }}>
@@ -32,6 +33,8 @@ export default function MainBody(props) {
                         setBillChartType={setBillChartType}
                         selectedBillDate={selectedBillDate}
                         setSelectedBillDate={setSelectedBillDate}
+                        showPaychecks={showPaychecks}
+                        setShowPaychecks={setShowPaychecks}
                     />
                 </Grid>
                 <Grid item xs={8}>
@@ -48,6 +51,7 @@ export default function MainBody(props) {
                         setBillType={setBillType}
                         billChartType={billChartType}
                         setBillChartType={setBillChartType}
+                        showPaychecks={showPaychecks}
                     />
                 </Grid>
             </Grid>

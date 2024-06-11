@@ -28,12 +28,14 @@ export default function SpendingPieChart(props) {
     }, [props.data, props.pageCount, props.page]);
 
     return (
-        (props.dataset || (props.usePropsData && props.data)) && (
+        (props.dataset || (props.usePropsData && props.data?.dataSet)) && (
             <PieChart
                 height={400}
                 series={[
                     {
-                        data: props.usePropsData ? props.data : props.dataset,
+                        data: props.usePropsData
+                            ? props.data.dataSet
+                            : props.dataset,
                         valueFormatter,
                     },
                 ]}
