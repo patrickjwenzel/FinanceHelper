@@ -5,29 +5,39 @@ import MoneyBox from "./MoneyBox";
 const _ = require("lodash");
 
 export default function MoneyGrid(props) {
-    const getGridItems = () => [
-        <MoneyBox
-            label={`${
-                props.billChartType === "pie" ? "Total" : "Average"
-            } Bills`}
-            data={props.data}
-            average="billAvg"
-        />,
-        props.showPaychecks && props.billType === "all" ? (
+    const getGridItems = () => {
+        let arr = [
             <MoneyBox
-                label="Average Income"
+                label={`${
+                    props.billChartType === "pie" ? "Total" : "Average"
+                } Bills`}
                 data={props.data}
-                average="incomeAvg"
-            />
-        ) : null,
-        props.showPaychecks && props.billType === "all" ? (
-            <MoneyBox
-                label="Average Difference"
-                data={props.data}
-                average="diffAvg"
-            />
-        ) : null,
-    ];
+                average="billAvg"
+            />,
+        ];
+
+        if (
+            props.showPaychecks &&
+            props.billType === "all" &&
+            props.billChartType === "bar"
+        ) {
+            arr = arr.concat([
+                <MoneyBox
+                    label="Average Income"
+                    data={props.data}
+                    average="incomeAvg"
+                />,
+                <MoneyBox
+                    label="Average Difference"
+                    data={props.data}
+                    average="diffAvg"
+                />,
+            ]);
+        }
+
+        return arr;
+    };
+
     return (
         props.data && (
             <Grid
