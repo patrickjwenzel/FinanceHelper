@@ -2,6 +2,7 @@ const _ = require("lodash");
 const moment = require("moment");
 
 const bankFileUtils = require("./bankFileUtils");
+const commonUtils = require("./commonUtils");
 const env = require("../../env");
 
 function ccFileAnalysis(
