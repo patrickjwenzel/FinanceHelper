@@ -15,7 +15,7 @@ export default function SavingsLineChart(props) {
                 xAxis={[
                     {
                         id: props.data.xAxis[0].id,
-                        scaleType: props.data.xAxis[0].id,
+                        scaleType: props.data.xAxis[0].scaleType,
                         data: _.map(props.data.xAxis[0].data, (date) =>
                             moment(date)
                         ),
