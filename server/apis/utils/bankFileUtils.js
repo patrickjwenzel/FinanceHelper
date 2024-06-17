@@ -1,5 +1,6 @@
 const _ = require("lodash");
 const moment = require("moment");
+const commonUtils = require("./commonUtils");
 
 function bankFileAnalysis(
     file,
@@ -53,7 +54,7 @@ function bankFileAnalysis(
                         sum.total += total;
                     }
                 } else {
-                    const date = commonUtils.getDate(
+                    let date = commonUtils.getDate(
                         splitLine,
                         dateIndex,
                         shouldSplit
