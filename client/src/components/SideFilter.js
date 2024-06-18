@@ -167,7 +167,6 @@ export default function SideFilter(props) {
                     <PeriodSelector
                         period={props.period}
                         setPeriod={props.setPeriod}
-                        includeDays={props.selectedTab === 2}
                     />
                 )}
                 {props.selectedTab === 3 && (

@@ -28,17 +28,6 @@ export default function PeriodSelector(props) {
                 >
                     Weekly
                 </Button>
-                {props.includeDays && (
-                    <Button
-                        sx={{
-                            backgroundColor:
-                                props.period === "daily" ? "#1976D2" : "gray",
-                        }}
-                        onClick={() => props.setPeriod("daily")}
-                    >
-                        Daily
-                    </Button>
-                )}
             </ButtonGroup>
         </Box>
     );

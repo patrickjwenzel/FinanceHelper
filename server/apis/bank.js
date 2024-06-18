@@ -43,10 +43,10 @@ function getBankBalances(req) {
     const totalBalances = [];
 
     _.forEach(scBalances, (balance) => {
-        let ssBalance = _.filter(
+        let ssBalance = _.find(
             ssBalances,
             (ssBalance) => balance.date === ssBalance.date
-        )[0];
+        );
 
         if (ssBalance) {
             totalBalances.push({
@@ -56,12 +56,27 @@ function getBankBalances(req) {
         } else {
             ssBalance = findMostRecentSSBalance(balance, ssBalances);
 
-            if (ssBalance) {
-                totalBalances.push({
-                    date: balance.date,
-                    total: balance.total + ssBalance.total,
-                });
-            }
+            ssBalances.splice(ssBalance.idx, 0, ssBalance.balance);
+
+            totalBalances.push({
+                date: balance.date,
+                total: balance.total + ssBalance.balance.total,
+            });
+        }
+    });
+
+    _.forEach(ssBalances, (balance) => {
+        let scBalance = _.find(
+            scBalances,
+            (scBalance) => balance.date === scBalance.date
+        );
+
+        if (!scBalance) {
+            scBalance = findMostRecentSSBalance(balance, scBalances);
+
+            scBalances.splice(scBalance.idx, 0, scBalance.balance);
+
+            totalBalances.splice(scBalance.idx, 0, scBalance.balance);
         }
     });
 
@@ -113,9 +128,17 @@ function findMostRecentSSBalance(scBalance, ssBalances) {
         const ssBalance = ssBalances[i];
 
         if (moment(ssBalance.date).diff(moment(scBalance.date)) >= 0) {
-            return i == 0 ? ssBalance : ssBalances[i - 1];
+            return {
+                idx: i,
+                balance: i === 0 ? ssBalance : ssBalances[i - 1],
+            };
         }
     }
+
+    return {
+        idx: ssBalances.length - 1,
+        balance: ssBalances[ssBalances.length - 1],
+    };
 }
 
 module.exports.getBankBalances = getBankBalances;
