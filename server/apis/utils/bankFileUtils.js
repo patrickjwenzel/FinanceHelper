@@ -98,12 +98,6 @@ function bankFileAnalysis(
     }
 }
 
-function padNumber(num) {
-    let newNum = Number(num);
-
-    return `${newNum < 10 && num.length === 1 ? "0" : ""}${num}`;
-}
-
 function shouldPass(req, toCompare, of) {
     let shouldPass = true;
 

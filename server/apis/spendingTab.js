@@ -40,8 +40,19 @@ function getCCInsightPurchases(req) {
                 }
             });
 
-            tempObj = { insights: insights };
-            retObj.date = purchase.date;
+            if (tempObj) {
+                _.forEach(Object.keys(insights), (key) => {
+                    const amount = insights[key];
+                    if (tempObj.insights[key]) {
+                        tempObj.insights[key] += amount;
+                    } else {
+                        tempObj.insights[key] = amount;
+                    }
+                });
+            } else {
+                tempObj = tempObj || { insights: insights };
+                retObj.date = purchase.date;
+            }
         }
     });
 
@@ -57,7 +68,7 @@ function getCCInsightPurchases(req) {
 function getPurchases(req, analysisFunc) {
     const ccExcludes = env.vars["CC_EXCLUDE"];
     const ccFolderContents = commonUtils.iterateBankFolder("CC_CSV_LOCATION");
-    const ccPurchases = commonUtils.iterateFilesInFolder(
+    let ccPurchases = commonUtils.iterateFilesInFolder(
         ccFolderContents.fileNames,
         ccFolderContents.folderPath,
         analysisFunc,
@@ -70,6 +81,41 @@ function getPurchases(req, analysisFunc) {
         ccExcludes,
         true
     );
+
+    if (req.params.insight) {
+        req.params.specific = _.map(
+            _.filter(env.vars.STORES, (store) =>
+                store.toMatch.includes("TARGET")
+            ),
+            "newName"
+        );
+
+        req.params.specific = _.uniq(req.params.specific);
+        req.params.specificMatch = {
+            category: "Shopping",
+            place: "Target",
+        };
+
+        // Sum up SC purchases
+        const scExcludes = env.vars["SC_EXCLUDE"];
+        const scFolderContents =
+            commonUtils.iterateBankFolder("SC_CSV_LOCATION");
+        const scPurchases = commonUtils.iterateFilesInFolder(
+            scFolderContents.fileNames,
+            scFolderContents.folderPath,
+            analysisFunc,
+            req,
+            "SC_CSV_PREFIX",
+            commonUtils.scAndSSFileNoPrefix,
+            0,
+            3,
+            true,
+            scExcludes,
+            true
+        );
+
+        ccPurchases = ccPurchases.concat(scPurchases);
+    }
 
     return ccPurchases;
 }

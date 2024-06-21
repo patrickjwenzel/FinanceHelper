@@ -21,6 +21,7 @@ function ccFileAnalysis(
     const isMonthly = req.params.period === "monthly";
     const of = isMonthly ? "month" : "week";
     const shouldIterate = bankFileUtils.shouldPass(req, fileNoPrefix, "month");
+    const nameIndex = req.params.specific ? 1 : 2;
 
     if (shouldIterate) {
         sum.insights = {};
@@ -33,25 +34,31 @@ function ccFileAnalysis(
             if (
                 bankFileUtils.shouldBeIncluded(splitLine, excludes, amountIndex)
             ) {
-                const date = commonUtils.getDate(
-                    splitLine,
-                    dateIndex,
-                    shouldSplit
-                );
+                const date = req.params.specific
+                    ? splitLine[dateIndex]
+                    : commonUtils.getDate(splitLine, dateIndex, shouldSplit);
                 const shouldAdd = bankFileUtils.shouldPass(req, date, of);
+                const nameIndexLine = splitLine[nameIndex];
 
-                const lineName = splitLine[2].split(" ");
+                const lineName = nameIndexLine.split(" ");
                 let isPeacock = false;
+
                 if (lineName.length === 3) {
                     const newName = `${lineName.shift()} ${lineName.pop()}`;
                     isPeacock = Boolean(env.vars.SUBSCRIPTIONS[newName]);
                 }
+
                 const isRecurringPayment =
-                    Boolean(env.vars.UTILITIES[splitLine[2]]) ||
-                    Boolean(env.vars.SUBSCRIPTIONS[splitLine[2]]) ||
+                    Boolean(env.vars.UTILITIES[nameIndexLine]) ||
+                    Boolean(env.vars.SUBSCRIPTIONS[nameIndexLine]) ||
                     isPeacock;
 
-                if (shouldAdd && !isRecurringPayment) {
+                const newName = findNewName(nameIndexLine);
+                const isSpecific = req.params.specific
+                    ? _.includes(req.params.specific, newName)
+                    : true;
+
+                if (shouldAdd && !isRecurringPayment && isSpecific) {
                     const startOf = moment(date)
                         .startOf(of)
                         .format("YYYY-MM-DD");
@@ -64,7 +71,9 @@ function ccFileAnalysis(
                     sum.date = startOf;
 
                     const index = req.params.insight === "category" ? 3 : 2;
-                    const insight = splitLine[index];
+                    const insight = req.params.specific
+                        ? req.params.specificMatch[req.params.insight]
+                        : splitLine[index];
 
                     if (sum.insights[insight] === undefined) {
                         sum.insights[insight] = total;
