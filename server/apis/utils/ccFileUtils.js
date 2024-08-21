@@ -92,7 +92,7 @@ function findNewName(name) {
     const stores = env.vars.STORES;
     for (let i = 0; i < stores.length; i++) {
         const store = stores[i];
-        if (name.includes(store.toMatch)) {
+        if (name.toLowerCase().includes(store.toMatch.toLowerCase())) {
             return store.newName;
         }
     }
