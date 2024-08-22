@@ -1,9 +1,9 @@
 import Box from "@mui/material/Box";
 
-import SpendingBarChart from "../charts/SpendingBarChart";
 import SavingsLineChart from "../charts/SavingsLineChart";
 import SpendingTab from "./SpendingTab";
 import RecurringTab from "./RecurringTab";
+import AnalysisTab from "./AnalysisTab";
 
 export default function ChartTab(props) {
     return (
@@ -16,9 +16,7 @@ export default function ChartTab(props) {
             }}
             textAlign="center"
         >
-            {props.selectedTab === 0 && (
-                <SpendingBarChart data={props.data} label="Cash Flow ($)" />
-            )}
+            {props.selectedTab === 0 && <AnalysisTab data={props.data} />}
             {props.selectedTab === 1 && (
                 <SpendingTab
                     selectedInsight={props.selectedInsight}

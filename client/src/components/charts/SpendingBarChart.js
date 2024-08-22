@@ -34,6 +34,11 @@ export default function SpendingBarChart(props) {
                     ]
                 }
                 {...chartSetting}
+                onAxisClick={
+                    props.onAxisClick
+                        ? (e, d) => props.onAxisClick(e, d)
+                        : () => {}
+                }
             />
         )
     );

@@ -181,10 +181,10 @@ function sortPieChartData(data) {
     return tempDataset;
 }
 
-function getDate(splitLine, dateIndex, shouldSplit) {
+function getDate(splitLine, dateIndex) {
     let newDate = splitLine[dateIndex];
 
-    if (shouldSplit) {
+    if (newDate.includes("/")) {
         newDate = newDate.split("/");
         newDate =
             `${newDate[2]}-${padNumber(newDate[0])}` +
@@ -200,6 +200,18 @@ function padNumber(num) {
     return `${newNum < 10 && num.length === 1 ? "0" : ""}${num}`;
 }
 
+function findNewName(name) {
+    const stores = env.vars.STORES;
+    for (let i = 0; i < stores.length; i++) {
+        const store = stores[i];
+        if (name.toLowerCase().includes(store.toMatch.toLowerCase())) {
+            return store.newName;
+        }
+    }
+
+    return name;
+}
+
 module.exports.iterateFilesInFolder = iterateFilesInFolder;
 module.exports.ccFileNoPrefix = ccFileNoPrefix;
 module.exports.iterateBankFolder = iterateBankFolder;
@@ -209,3 +221,4 @@ module.exports.sortBarChartData = sortBarChartData;
 module.exports.sortPieChartData = sortPieChartData;
 module.exports.createDate = createDate;
 module.exports.getDate = getDate;
+module.exports.findNewName = findNewName;

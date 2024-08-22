@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 
 import SpendingBarChart from "../charts/SpendingBarChart";
 import SpendingPieChart from "../charts/SpendingPieChart";
-import MoneyGrid from "../boxGrid/MoneyGrid";
+import MoneyGrid from "../grids/MoneyGrid";
 
 export default function RecurringTab(props) {
     const getChartLabel = () => {

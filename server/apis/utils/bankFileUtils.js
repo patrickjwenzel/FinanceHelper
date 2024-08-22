@@ -14,14 +14,14 @@ function bankFileAnalysis(
     excludes
 ) {
     const fileNoPrefix = noPrefixFunc(prefix, file);
-    const sum = {};
+    const sum = { total: 0 };
     const isMonthly = req.params.period === "monthly";
     const shouldIterate = shouldPass(req, fileNoPrefix, "month");
     const gettingBalances = _.isEmpty(excludes);
+    const fileDate = moment(fileNoPrefix).format("MM/YYYY");
 
     if (isMonthly) {
-        sum.date = moment(fileNoPrefix).format("MM/YYYY");
-        sum.total = 0;
+        sum[fileDate] = {};
     }
 
     if (shouldIterate) {
@@ -36,6 +36,7 @@ function bankFileAnalysis(
         _.forEach(linesToIterate, (line) => {
             const splitLine = line.split(",");
             if (shouldBeIncluded(splitLine, excludes, amountIndex)) {
+                let shouldAdd = true;
                 let total = parseFloat(splitLine[amountIndex]);
                 total = Boolean(total)
                     ? total
@@ -51,24 +52,43 @@ function bankFileAnalysis(
                     if (gettingBalances) {
                         sum.total = total;
                     } else {
+                        const newName = commonUtils.findNewName(
+                            splitLine[dateIndex + 1]
+                        );
+
                         sum.total += total;
+                        if (sum[fileDate][newName]) {
+                            sum[fileDate][newName] += total;
+                        } else {
+                            sum[fileDate][newName] = total;
+                        }
                     }
                 } else {
-                    let date = commonUtils.getDate(
-                        splitLine,
-                        dateIndex,
-                        shouldSplit
-                    );
-                    const of = req.params.period === "weekly" ? "week" : "day";
+                    let date = commonUtils.getDate(splitLine, dateIndex);
+                    const of = "week";
 
-                    const shouldAdd = shouldPass(req, date, of);
+                    shouldAdd = shouldPass(req, date, of);
 
                     if (shouldAdd) {
                         date = moment(date).startOf(of).format("YYYY-MM-DD");
-                        if (sum[date] && !gettingBalances) {
-                            sum[date] += total;
-                        } else {
+                        if (gettingBalances) {
                             sum[date] = total;
+                        } else {
+                            if (sum[date]) {
+                                sum[date].total += total;
+                            } else {
+                                sum[date] = { total: total };
+                            }
+
+                            const newName = commonUtils.findNewName(
+                                splitLine[dateIndex + 1]
+                            );
+
+                            if (sum[date][newName]) {
+                                sum[date][newName] += total;
+                            } else {
+                                sum[date][newName] = total;
+                            }
                         }
                     }
                 }
@@ -76,20 +96,22 @@ function bankFileAnalysis(
         });
 
         if (isMonthly) {
-            sum.date = moment(fileNoPrefix).format("MM/YYYY");
+            sum.date = fileDate;
             sum.total = sum.total;
             return sum;
         } else {
             const arr = [];
             _.forEach(Object.keys(sum), (key) => {
-                const d1 = moment(fileNoPrefix);
-                const d2 = moment(key);
+                if (key !== "total") {
+                    const d1 = moment(fileNoPrefix);
+                    const d2 = moment(key);
 
-                if (d2.diff(d1) >= 0) {
-                    arr.push({
-                        date: key,
-                        total: sum[key],
-                    });
+                    if (d2.diff(d1) >= 0) {
+                        arr.push({
+                            date: key,
+                            ...sum[key],
+                        });
+                    }
                 }
             });
 

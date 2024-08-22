@@ -53,7 +53,7 @@ function ccFileAnalysis(
                     Boolean(env.vars.SUBSCRIPTIONS[nameIndexLine]) ||
                     isPeacock;
 
-                const newName = findNewName(nameIndexLine);
+                const newName = commonUtils.findNewName(nameIndexLine);
                 const isSpecific = req.params.specific
                     ? _.includes(req.params.specific, newName)
                     : true;
@@ -88,17 +88,4 @@ function ccFileAnalysis(
     return sum;
 }
 
-function findNewName(name) {
-    const stores = env.vars.STORES;
-    for (let i = 0; i < stores.length; i++) {
-        const store = stores[i];
-        if (name.toLowerCase().includes(store.toMatch.toLowerCase())) {
-            return store.newName;
-        }
-    }
-
-    return name;
-}
-
 module.exports.ccFileAnalysis = ccFileAnalysis;
-module.exports.findNewName = findNewName;

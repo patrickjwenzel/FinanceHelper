@@ -63,7 +63,46 @@ function mergeBanks(req) {
         purchases[purchase.date] += purchase.total;
     });
 
-    return commonUtils.sortBarChartData(purchases, req);
+    const allPurchses = scPurchases.concat(ssPurchases).concat(ccPurchases);
+    let storeSums = {};
+    const isMonthly = req.params.period === "monthly";
+
+    const ret = {
+        chartData: commonUtils.sortBarChartData(purchases, req),
+    };
+
+    _.forEach(allPurchses, (purchase) => {
+        if (!storeSums[purchase.date]) {
+            storeSums[purchase.date] = {};
+        }
+
+        _.forEach(
+            Object.keys(isMonthly ? purchase[purchase.date] : purchase),
+            (key) => {
+                if (!key.match(/date|total/)) {
+                    if (storeSums[purchase.date][key]) {
+                        storeSums[purchase.date][key] += isMonthly
+                            ? purchase[purchase.date][key]
+                            : purchase[key];
+                    } else {
+                        storeSums[purchase.date][key] = isMonthly
+                            ? purchase[purchase.date][key]
+                            : purchase[key];
+                    }
+                }
+            }
+        );
+    });
+
+    storeSums = _.map(Object.keys(storeSums), (key) => ({
+        date: key,
+        places: storeSums[key],
+    }));
+    storeSums = _.sortBy(storeSums, "date");
+
+    ret.storeSums = storeSums;
+
+    return ret;
 }
 
 module.exports.mergeBanks = mergeBanks;
