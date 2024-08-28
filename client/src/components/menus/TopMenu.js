@@ -17,7 +17,7 @@ export default function TopMenu() {
         },
         {
             icon: <MUIIcons.ShoppingCartCheckout />,
-            label: process.env.REACT_APP_SPENDING_NAME,
+            label: "Spending",
         },
         {
             icon: <MUIIcons.AccountBalance />,
@@ -25,7 +25,7 @@ export default function TopMenu() {
         },
         {
             icon: <MUIIcons.RotateRight />,
-            label: process.env.REACT_APP_RECURRING_PAYMENTS,
+            label: "Recurring Payments",
         },
     ];
 
