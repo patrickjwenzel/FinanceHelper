@@ -10,7 +10,7 @@ const bank = require("./apis/bank");
 const commonUtils = require("./apis/utils/commonUtils");
 
 // App setup
-const PORT = process.env.PORT || 3001;
+const PORT = 8080;
 const app = express();
 app.use(bodyParser.json());
 
