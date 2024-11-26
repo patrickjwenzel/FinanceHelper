@@ -31,7 +31,7 @@ function getCCInsightPurchases(req) {
             const insights = {};
             _.forEach(Object.keys(purchase.insights), (key) => {
                 const amount = purchase.insights[key] * -1;
-                const newName = ccFileUtils.findNewName(key);
+                const newName = commonUtils.findNewName(key);
 
                 if (insights[newName]) {
                     insights[newName] += amount;
