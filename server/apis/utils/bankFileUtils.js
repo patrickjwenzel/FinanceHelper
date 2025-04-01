@@ -120,7 +120,7 @@ function bankFileAnalysis(
     }
 }
 
-function shouldPass(req, toCompare, of) {
+function shouldPass(req, toCompare, of, passMin = false) {
     let shouldPass = true;
 
     req.params.min = req.params.date
@@ -132,7 +132,12 @@ function shouldPass(req, toCompare, of) {
         : req.params.max;
 
     if (req.params.min) {
-        shouldPass = shouldPass && isGTMin(toCompare, req.params.min, of);
+        const gtMin = isGTMin(toCompare, req.params.min, of);
+
+        shouldPass = shouldPass && gtMin;
+        if (passMin) {
+            return gtMin;
+        }
     }
 
     if (req.params.max) {

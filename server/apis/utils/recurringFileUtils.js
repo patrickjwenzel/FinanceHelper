@@ -21,8 +21,12 @@ function bankFileAnalysisRecurring(
     const fileNoPrefix = noPrefixFunc(prefix, file);
     const sum = {};
     const of = "month";
-    const shouldIterate = bankFileUtils.shouldPass(req, fileNoPrefix, "month");
-
+    const shouldIterate = bankFileUtils.shouldPass(
+        req,
+        fileNoPrefix,
+        "month",
+        true
+    );
     if (shouldIterate) {
         sum.insights = {};
         let splitLines = lines.split("\n");
@@ -39,14 +43,24 @@ function bankFileAnalysisRecurring(
                     dateIndex,
                     shouldSplit
                 );
-                const shouldAddDate = bankFileUtils.shouldPass(req, date, of);
+                const shouldAddDate = bankFileUtils.shouldPass(
+                    req,
+                    date,
+                    of,
+                    true
+                );
 
                 let lineName = splitLine[nameIndex];
-                let name = env.vars[recurType]?.[lineName];
+                let name =
+                    recurType === "ALL"
+                        ? env.vars.SUBSCRIPTIONS[lineName] ||
+                          env.vars.UTILITIES[lineName]
+                        : env.vars[recurType]?.[lineName];
+
                 let shouldAddPeackock = false;
                 const shouldAddPaycheck =
                     req.params.showPaychecks &&
-                    _.includes(env.vars.PAYCHECK, lineName);
+                    _.includes(env.vars.PAYCHECKS["primary"], lineName);
 
                 const isValidName = Boolean(name);
 
@@ -67,20 +81,15 @@ function bankFileAnalysisRecurring(
                     }
                 }
 
-                if (shouldAddPaycheck) {
+                if (shouldAddPaycheck && !name) {
                     name = lineName;
                 }
 
-                let shouldAddName = false;
-
-                if (req.params.showPaychecks) {
-                    shouldAddName =
-                        isValidPaycheck("primary", lineName) ||
-                        (req.params.includeSecondary &&
-                            isValidPaycheck("secondary", lineName));
-                } else {
-                    shouldAddName = isValidName || shouldAddPeackock;
-                }
+                const shouldAddName = req.params.showPaychecks
+                    ? isValidPaycheck("primary", lineName) ||
+                      (req.params.includeSecondary &&
+                          isValidPaycheck("secondary", lineName))
+                    : isValidName || shouldAddPeackock;
 
                 if (shouldAddDate && shouldAddName) {
                     const startOf = moment(date).startOf(of).format("YYYY-MM");
